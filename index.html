@@ -103,7 +103,7 @@
     @media (max-width: 768px) { section { padding: 3rem 1.2rem; } }
 
     /* ================================================================
-       HERO WITH SPLIT LAYOUT: TEXT LEFT + DIAGRAM RIGHT
+       HERO WITH SPLIT LAYOUT
        ================================================================ */
     .hero {
       position: relative;
@@ -205,7 +205,7 @@
     }
 
     /* ================================================================
-       TABS & REST OF SITE (unchanged)
+       TABS
        ================================================================ */
     .paper-tabs {
       display: flex;
@@ -234,6 +234,9 @@
     .paper-panel.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ================================================================
+       3-LEVEL CARDS
+       ================================================================ */
     .level-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -291,16 +294,85 @@
 
     @media (max-width: 768px) { .level-grid { grid-template-columns: 1fr; } }
 
-    .diagram-placeholder {
+    /* ================================================================
+       DIAGRAM CONTAINERS (Full SVG restored)
+       ================================================================ */
+    .diagram-container {
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.04);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.5rem;
       margin: 1.5rem 0;
       text-align: center;
     }
-    .diagram-placeholder i { font-size: 3rem; color: #2dd4bf; margin-bottom: 0.5rem; }
+    .diagram-container svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .diagram-caption {
+      margin-top: 0.8rem;
+      color: #8892a8;
+      font-size: 0.8rem;
+    }
 
+    /* ================================================================
+       DISPERSION TOGGLE (Paper 2)
+       ================================================================ */
+    .dispersion-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      padding: 0.5rem;
+    }
+    .dispersion-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .particle-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      opacity: 0.8;
+      transition: all 0.4s;
+    }
+    .diagram-agglomeration .clumped-group {
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
+    .diagram-agglomeration .dispersed-group {
+      opacity: 0.3;
+      transition: opacity 0.5s;
+    }
+    .diagram-agglomeration.show-dispersed .clumped-group {
+      opacity: 0.15;
+    }
+    .diagram-agglomeration.show-dispersed .dispersed-group {
+      opacity: 1;
+    }
+    .toggle-btn {
+      background: rgba(45,212,191,0.12);
+      border: 1px solid #2dd4bf;
+      color: #e2e8f0;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 0.5rem;
+    }
+    .toggle-btn:hover { background: rgba(45,212,191,0.2); }
+
+    /* ================================================================
+       COMPARE
+       ================================================================ */
     .compare-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -320,6 +392,9 @@
     .compare-card .row .val.highlight { color: #2dd4bf; font-weight: 600; }
     @media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; } }
 
+    /* ================================================================
+       GAP
+       ================================================================ */
     .gap-text {
       background: rgba(255,255,255,0.03);
       padding: 1.5rem 2rem;
@@ -380,6 +455,9 @@
       .venn-gap .big { font-size: 0.7rem; }
     }
 
+    /* ================================================================
+       QUESTION
+       ================================================================ */
     .question-box {
       background: linear-gradient(135deg, rgba(45,212,191,0.04), rgba(167,139,250,0.04));
       border: 2px solid rgba(45,212,191,0.1);
@@ -396,6 +474,9 @@
       line-height: 1.4;
     }
 
+    /* ================================================================
+       VERDICT
+       ================================================================ */
     .verdict-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -444,6 +525,73 @@
       border-radius: 20px;
       border: 1px solid rgba(45,212,191,0.15);
     }
+
+    /* ================================================================
+       PAPER 3 SVG STYLES
+       ================================================================ */
+    .ev-layer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      width: 100%;
+      min-height: 50px;
+      border: 2px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .ev-layer .label { font-weight: 600; font-size: 0.85rem; }
+    .ev-ion { border-color: #f59e0b; background: rgba(245,158,11,0.06); }
+    .ev-ion .label { color: #f59e0b; }
+    .ev-mask { border-color: #f59e0b; background: rgba(245,158,11,0.04); }
+    .ev-mask .label { color: #e2e8f0; }
+    .ev-mask .hole {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid #f59e0b;
+      background: #0b0e1a;
+      margin-left: 8px;
+    }
+    .ev-field { border-color: #2dd4bf; background: rgba(45,212,191,0.05); flex-direction: column; gap: 4px; }
+    .ev-field .label { color: #2dd4bf; }
+    .ev-field .field-lines { display: flex; gap: 16px; justify-content: center; width: 100%; }
+    .ev-field .field-line {
+      width: 3px; height: 28px;
+      background: #2dd4bf;
+      opacity: 0.5;
+      border-radius: 4px;
+      position: relative;
+    }
+    .ev-field .field-line .dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #f472b6;
+      top: -4px; left: -3.5px;
+      box-shadow: 0 0 12px #f472b6;
+    }
+    .ev-pillar { border-color: #2dd4bf; background: rgba(45,212,191,0.06); min-height: 70px; }
+    .ev-pillar .label { color: #2dd4bf; font-weight: 700; font-size: 1rem; }
+    .ev-pillar .pillar-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .ev-pillar .pillar-body {
+      width: 40px; height: 45px;
+      background: linear-gradient(to bottom, #2dd4bf, #f59e0b);
+      border-radius: 6px 6px 0 0;
+      border: 2px solid #2dd4bf;
+    }
+    .ev-substrate { border-color: #334155; background: rgba(51,65,85,0.15); min-height: 35px; }
+    .ev-substrate .label { color: #94a3b8; }
+    .ev-substrate .substrate-block { width: 60%; height: 14px; background: #334155; border-radius: 4px; }
+    .ev-connector { display: flex; justify-content: center; align-items: center; font-size: 1.2rem; color: #5a6478; padding: 2px 0; }
+
+    @media (max-width: 600px) {
+      .ev-layer { flex-wrap: wrap; padding: 10px; min-height: 40px; }
+      .ev-field .field-lines { gap: 10px; }
+      .ev-field .field-line { height: 20px; }
+      .ev-pillar .pillar-body { height: 30px; width: 30px; }
+    }
   </style>
 </head>
 <body>
@@ -462,7 +610,7 @@
   </nav>
 
   <!-- ================================================================ -->
-  <!-- HERO WITH TEXT LEFT + DIAGRAM RIGHT -->
+  <!-- HERO -->
   <!-- ================================================================ -->
   <section class="hero" id="intro">
     <canvas id="particle-canvas"></canvas>
@@ -483,100 +631,66 @@
         <div class="scroll-hint"><i class="fas fa-chevron-down"></i> Scroll to explore</div>
       </div>
 
-      <!-- ===== NEW DIAGRAM: AJP vs Traditional Printing ===== -->
+      <!-- Hero Diagram: AJP vs Traditional -->
       <div class="hero-diagram">
         <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
-
-          <!-- Title -->
           <text x="240" y="22" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle" font-weight="600">AJP vs Traditional Printing</text>
-
-          <!-- ===== LEFT: Traditional ===== -->
+          <!-- LEFT: Traditional -->
           <rect x="10" y="40" width="200" height="200" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
           <text x="110" y="62" font-family="Inter" font-size="11" fill="#8892a8" text-anchor="middle" font-weight="600">❌ Traditional</text>
-
-          <!-- Flat substrate -->
           <rect x="30" y="200" width="160" height="12" rx="3" fill="#334155"/>
           <text x="110" y="228" font-family="Inter" font-size="8" fill="#5a6478" text-anchor="middle">Flat substrate only</text>
-
-          <!-- Nozzle (clogged) -->
           <rect x="85" y="130" width="20" height="40" rx="4" fill="#f472b6" opacity="0.4"/>
           <rect x="85" y="130" width="20" height="40" rx="4" fill="none" stroke="#f472b6" stroke-width="1.5"/>
           <text x="95" y="120" font-family="Inter" font-size="7" fill="#f472b6" text-anchor="middle">Nozzle</text>
-
-          <!-- Thick ink (clogged) -->
           <rect x="80" y="170" width="30" height="8" rx="2" fill="#f472b6" opacity="0.3"/>
           <rect x="75" y="180" width="40" height="6" rx="2" fill="#f472b6" opacity="0.2"/>
           <text x="95" y="200" font-family="Inter" font-size="7" fill="#f472b6" text-anchor="middle" opacity="0.6">✕ Clogged!</text>
-
-          <!-- X mark -->
           <text x="110" y="100" font-family="Inter" font-size="14" fill="#f472b6" text-anchor="middle" font-weight="700">✕</text>
           <text x="110" y="115" font-family="Inter" font-size="8" fill="#f472b6" text-anchor="middle">Thick paste</text>
           <text x="110" y="127" font-family="Inter" font-size="8" fill="#f472b6" text-anchor="middle">Nozzle clogging</text>
 
-          <!-- ===== RIGHT: AJP ===== -->
+          <!-- RIGHT: AJP -->
           <rect x="230" y="40" width="240" height="200" rx="12" fill="rgba(45,212,191,0.04)" stroke="rgba(45,212,191,0.15)" stroke-width="1"/>
           <text x="350" y="62" font-family="Inter" font-size="11" fill="#2dd4bf" text-anchor="middle" font-weight="600">✅ Aerosol Jet Printing</text>
-
-          <!-- Curved substrate (golf ball) -->
           <path d="M250 210 Q350 230 450 210" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.4"/>
           <path d="M260 215 Q350 235 440 215" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.3"/>
           <circle cx="350" cy="215" r="3" fill="#2dd4bf" opacity="0.6"/>
           <text x="350" y="250" font-family="Inter" font-size="8" fill="#5a6478" text-anchor="middle">Curved surface (golf ball)</text>
-
-          <!-- Atomizer -->
           <rect x="280" y="80" width="60" height="30" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
           <text x="310" y="95" font-family="Inter" font-size="8" fill="#f59e0b" text-anchor="middle">Atomizer</text>
           <text x="310" y="105" font-family="Inter" font-size="6" fill="#5a6478" text-anchor="middle">(Mist generation)</text>
-
-          <!-- Mist particles -->
           <circle cx="320" cy="75" r="4" fill="#2dd4bf" opacity="0.6"/>
           <circle cx="335" cy="70" r="3" fill="#2dd4bf" opacity="0.5"/>
           <circle cx="345" cy="78" r="5" fill="#2dd4bf" opacity="0.7"/>
           <circle cx="355" cy="68" r="3" fill="#2dd4bf" opacity="0.4"/>
           <circle cx="330" cy="82" r="4" fill="#2dd4bf" opacity="0.5"/>
-
-          <!-- Sheath gas arrows -->
           <path d="M270 130 L270 160 L275 160" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
           <text x="265" y="148" font-family="Inter" font-size="6" fill="#10b981" text-anchor="end">Sheath Gas</text>
-
           <path d="M400 130 L400 160 L395 160" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
           <text x="405" y="148" font-family="Inter" font-size="6" fill="#10b981" text-anchor="start">Sheath Gas</text>
-
-          <!-- Focused stream -->
           <path d="M350 85 L350 200" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.4"/>
           <path d="M345 85 L345 200" fill="none" stroke="#2dd4bf" stroke-width="1" opacity="0.2"/>
           <path d="M355 85 L355 200" fill="none" stroke="#2dd4bf" stroke-width="1" opacity="0.2"/>
-
-          <!-- Deposition head -->
           <rect x="320" y="130" width="60" height="25" rx="6" fill="none" stroke="#2dd4bf" stroke-width="1.5"/>
           <text x="350" y="146" font-family="Inter" font-size="7" fill="#2dd4bf" text-anchor="middle">Nozzle</text>
-
-          <!-- Distance label -->
           <path d="M310 165 L310 180" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
           <text x="300" y="172" font-family="Inter" font-size="6" fill="#f59e0b" text-anchor="end" opacity="0.7">1‑5 mm</text>
-
-          <!-- Mist cloud on substrate -->
           <ellipse cx="350" cy="195" rx="30" ry="8" fill="#2dd4bf" opacity="0.08"/>
           <ellipse cx="350" cy="195" rx="20" ry="5" fill="#2dd4bf" opacity="0.12"/>
 
-          <!-- ===== Bottom labels ===== -->
           <text x="110" y="275" font-family="Inter" font-size="10" fill="#5a6478" text-anchor="middle">✕ Physical contact required</text>
           <text x="110" y="290" font-family="Inter" font-size="10" fill="#5a6478" text-anchor="middle">✕ Only flat surfaces</text>
           <text x="110" y="305" font-family="Inter" font-size="10" fill="#5a6478" text-anchor="middle">✕ Nozzle clogs easily</text>
-
           <text x="350" y="275" font-family="Inter" font-size="10" fill="#2dd4bf" text-anchor="middle">✓ Non‑contact (1‑5mm stand‑off)</text>
           <text x="350" y="290" font-family="Inter" font-size="10" fill="#2dd4bf" text-anchor="middle">✓ Conformal on curved surfaces</text>
           <text x="350" y="305" font-family="Inter" font-size="10" fill="#2dd4bf" text-anchor="middle">✓ Sheath gas prevents clogging</text>
-
-          <!-- ===== BIG ARROW ===== -->
           <path d="M220 140 L230 140" fill="none" stroke="#5a6478" stroke-width="2" marker-end="url(#arrow)"/>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6478"/>
             </marker>
           </defs>
-
-          <!-- Legend -->
           <rect x="10" y="330" width="460" height="40" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
           <text x="30" y="352" font-family="Inter" font-size="8" fill="#5a6478">●</text>
           <text x="42" y="352" font-family="Inter" font-size="8" fill="#8892a8">Mist droplets</text>
@@ -587,7 +701,6 @@
           <text x="370" y="352" font-family="Inter" font-size="8" fill="#f472b6">●</text>
           <text x="382" y="352" font-family="Inter" font-size="8" fill="#8892a8">Clogged nozzle</text>
         </svg>
-
         <div class="diagram-label">
           <span><span class="dot-teal"></span> AJP: Mist printing</span>
           <span><span class="dot-amber"></span> Non‑contact</span>
@@ -598,7 +711,7 @@
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAPERS SECTION (unchanged from previous working version)        -->
+  <!-- PAPERS SECTION WITH FULL DIAGRAMS -->
   <!-- ================================================================ -->
   <section id="papers">
     <div class="container">
@@ -612,13 +725,44 @@
         <button data-paper="3" onclick="switchPaper(3)">⚡ Paper 3 · Jung</button>
       </div>
 
-      <!-- PAPER 1 -->
+      <!-- ========================================================== -->
+      <!-- PAPER 1 – FULL AJP PROCESS SVG -->
+      <!-- ========================================================== -->
       <div class="paper-panel active" id="panel-1">
-        <div class="diagram-placeholder">
-          <i class="fas fa-microscope"></i>
-          <p style="color:#2dd4bf; font-weight:600;">AJP Process · Atomization → Sheath Gas → Deposition</p>
-          <p style="color:#8892a8; font-size:0.85rem;">Ultrasonic (1‑10 cP) vs Pneumatic (1‑1000 cP) · Virtual Impactor · 1‑5 mm stand‑off</p>
+        <div class="diagram-container">
+          <h4 style="color:#2dd4bf;">AJP Process · Wilkinson &amp; Smith 2019</h4>
+          <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" style="max-width:750px; width:100%; height:auto;">
+            <rect x="20" y="130" width="90" height="60" rx="6" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            <text x="65" y="170" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle">Atomizer</text>
+            <text x="65" y="188" font-family="Inter" font-size="10" fill="#8892a8" text-anchor="middle">(Ultrasonic/Pneumatic)</text>
+            <circle cx="130" cy="150" r="7" fill="#2dd4bf" opacity="0.9"/>
+            <circle cx="148" cy="165" r="5" fill="#2dd4bf" opacity="0.7"/>
+            <circle cx="165" cy="140" r="6" fill="#2dd4bf" opacity="0.8"/>
+            <line x1="20" y1="110" x2="230" y2="110" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 4"/>
+            <text x="110" y="100" font-family="Inter" font-size="11" fill="#f59e0b" text-anchor="middle">Carrier Gas Flow</text>
+            <rect x="210" y="130" width="90" height="60" rx="6" fill="none" stroke="#a78bfa" stroke-width="2"/>
+            <text x="255" y="168" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle">Virtual</text>
+            <text x="255" y="186" font-family="Inter" font-size="10" fill="#8892a8" text-anchor="middle">Impactor</text>
+            <line x1="340" y1="80" x2="340" y2="220" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="6 4"/>
+            <text x="365" y="155" font-family="Inter" font-size="12" fill="#2dd4bf">Sheath Gas</text>
+            <rect x="380" y="130" width="110" height="60" rx="6" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            <text x="435" y="162" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle">Deposition Head</text>
+            <text x="435" y="182" font-family="Inter" font-size="10" fill="#8892a8" text-anchor="middle">(Coaxial Nozzle)</text>
+            <path d="M435 190 L435 265 L455 265 L455 190" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.7"/>
+            <path d="M435 190 L435 265 L415 265 L415 190" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.7"/>
+            <text x="450" y="280" font-family="Inter" font-size="12" fill="#2dd4bf" font-weight="600">Focused Aerosol</text>
+            <rect x="370" y="275" width="180" height="20" rx="4" fill="#334155"/>
+            <text x="460" y="310" font-family="Inter" font-size="13" fill="#8892a8" text-anchor="middle">Substrate (1–5 mm stand‑off)</text>
+            <text x="20" y="30" font-family="Inter" font-size="14" fill="#2dd4bf" font-weight="600">①</text>
+            <text x="30" y="50" font-family="Inter" font-size="11" fill="#8892a8">Atomization</text>
+            <text x="210" y="30" font-family="Inter" font-size="14" fill="#a78bfa" font-weight="600">②</text>
+            <text x="220" y="50" font-family="Inter" font-size="11" fill="#8892a8">Size Selection</text>
+            <text x="380" y="30" font-family="Inter" font-size="14" fill="#2dd4bf" font-weight="600">③</text>
+            <text x="390" y="50" font-family="Inter" font-size="11" fill="#8892a8">Focusing &amp; Deposition</text>
+          </svg>
+          <div class="diagram-caption">① Atomization → ② Droplet size selection → ③ Sheath gas focusing & deposition</div>
         </div>
+
         <div class="level-grid">
           <div class="level-card l1">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
@@ -654,21 +798,91 @@
         <div class="source-note">Source: Wilkinson et al. (2019) — Int J Adv Manuf Technol</div>
       </div>
 
-      <!-- PAPER 2 -->
+      <!-- ========================================================== -->
+      <!-- PAPER 2 – AGGLOMERATION TOGGLE + MID-AIR BLENDING -->
+      <!-- ========================================================== -->
       <div class="paper-panel" id="panel-2">
-        <div class="diagram-placeholder">
-          <i class="fas fa-flask" style="color:#f59e0b;"></i>
-          <p style="color:#f59e0b; font-weight:600;">Mid‑Air Blending · Separate Atomization</p>
-          <p style="color:#8892a8; font-size:0.85rem;">Polymer + Ag nanoparticles · Combined at 114° printhead · Zero agglomeration</p>
+        <div class="diagram-container">
+          <h4 style="color:#f59e0b;">Mid‑Air Blending · Hwang &amp; Choi 2024</h4>
+          <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" style="max-width:600px; width:100%; height:auto;">
+            <rect x="30" y="40" width="120" height="60" rx="8" fill="none" stroke="#f59e0b" stroke-width="2"/>
+            <text x="90" y="75" font-family="Inter" font-size="12" fill="#e2e8f0" text-anchor="middle">Polymer Aerosol</text>
+            <circle cx="60" cy="55" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle cx="80" cy="70" r="5" fill="#f59e0b" opacity="0.6"/>
+            <circle cx="100" cy="50" r="7" fill="#f59e0b" opacity="0.8"/>
+            <rect x="30" y="150" width="120" height="60" rx="8" fill="none" stroke="#f59e0b" stroke-width="2"/>
+            <text x="90" y="185" font-family="Inter" font-size="12" fill="#e2e8f0" text-anchor="middle">NP Aerosol (Ag)</text>
+            <circle cx="60" cy="165" r="5" fill="#f472b6" opacity="0.8"/>
+            <circle cx="80" cy="180" r="6" fill="#f472b6" opacity="0.7"/>
+            <circle cx="100" cy="160" r="5" fill="#f472b6" opacity="0.9"/>
+            <path d="M150 70 L280 70 L280 130 L300 130" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M150 180 L280 180 L280 130 L300 130" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 4"/>
+            <text x="260" y="155" font-family="Inter" font-size="11" fill="#2dd4bf" text-anchor="middle">Mix at Printhead</text>
+            <rect x="300" y="110" width="60" height="40" rx="6" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            <text x="330" y="135" font-family="Inter" font-size="11" fill="#e2e8f0" text-anchor="middle">Nozzle</text>
+            <rect x="380" y="190" width="180" height="30" rx="4" fill="#334155"/>
+            <text x="470" y="210" font-family="Inter" font-size="12" fill="#8892a8" text-anchor="middle">Substrate</text>
+            <circle cx="350" cy="185" r="6" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="360" cy="195" r="5" fill="#f472b6" opacity="0.9"/>
+            <circle cx="370" cy="180" r="7" fill="#f59e0b" opacity="0.7"/>
+            <circle cx="380" cy="200" r="5" fill="#f472b6" opacity="0.8"/>
+            <circle cx="390" cy="185" r="6" fill="#f59e0b" opacity="0.9"/>
+            <circle cx="400" cy="195" r="5" fill="#f472b6" opacity="0.7"/>
+            <text x="470" y="240" font-family="Inter" font-size="12" fill="#f59e0b" font-weight="600">Perfect Dispersion</text>
+          </svg>
+          <div class="diagram-caption">Separate atomization → combined at printhead → perfect dispersion with zero agglomeration</div>
         </div>
+
+        <!-- Agglomeration vs Dispersion Toggle -->
+        <div class="diagram-container">
+          <h4 style="color:#f59e0b;">Dispersion: Old Problem vs. New Solution</h4>
+          <div class="diagram-agglomeration" id="dispersionDiagram">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center; max-width:500px; margin:0 auto;">
+              <!-- Left: Agglomeration -->
+              <div>
+                <h4 style="font-size:1rem; color:#8892a8;">❌ Pre‑Mixing (Agglomeration)</h4>
+                <div class="clumped-group">
+                  <svg viewBox="0 0 200 100" style="width:100%; max-width:180px; height:auto; margin:0 auto;">
+                    <circle cx="50" cy="40" r="18" fill="#f472b6" opacity="0.8"/>
+                    <circle cx="65" cy="45" r="14" fill="#f472b6" opacity="0.7"/>
+                    <circle cx="40" cy="50" r="12" fill="#f472b6" opacity="0.6"/>
+                    <circle cx="130" cy="50" r="20" fill="#f472b6" opacity="0.8"/>
+                    <circle cx="150" cy="45" r="15" fill="#f472b6" opacity="0.7"/>
+                    <circle cx="120" cy="60" r="10" fill="#f472b6" opacity="0.6"/>
+                    <circle cx="145" cy="65" r="12" fill="#f472b6" opacity="0.5"/>
+                    <circle cx="90" cy="75" r="16" fill="#f472b6" opacity="0.7"/>
+                    <circle cx="80" cy="85" r="12" fill="#f472b6" opacity="0.6"/>
+                  </svg>
+                </div>
+                <p style="color:#8892a8; font-size:0.8rem;">Nanoparticles clump → weak spots, leakage</p>
+              </div>
+              <!-- Right: Dispersion -->
+              <div>
+                <h4 style="font-size:1rem; color:#8892a8;">✅ Mid‑Air Blending (AM3D)</h4>
+                <div class="dispersed-group">
+                  <div class="dispersion-grid">
+                    <div class="dispersion-row"><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span></div>
+                    <div class="dispersion-row"><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span></div>
+                    <div class="dispersion-row"><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span><span class="particle-dot"></span></div>
+                  </div>
+                </div>
+                <p style="color:#8892a8; font-size:0.8rem;">Perfect dispersion, uniform properties</p>
+              </div>
+            </div>
+            <div style="margin-top:0.8rem;">
+              <button class="toggle-btn" id="toggleDispersion"><i class="fas fa-sync-alt"></i> Click to Apply Mid‑Air Blending</button>
+            </div>
+          </div>
+          <div class="diagram-caption">Left: Agglomeration from pre‑mixing. Right: Isotropic dispersion via separate atomization.</div>
+        </div>
+
         <div class="level-grid">
           <div class="level-card l1">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
             <div class="level-title">What is the paper about?</div>
             <div class="level-desc">
               <strong>Title:</strong> Highly dispersed nanomaterials via AM3D printing<br>
-              <strong>Abstract:</strong> Novel method that achieves perfect dispersion by atomizing polymer and nanoparticles separately, combining only at the printhead.<br>
-              <strong>Key Figures:</strong> Shows graffiti‑inspired process, SEM images of dispersion, and dielectric performance.
+              <strong>Abstract:</strong> Novel method that achieves perfect dispersion by atomizing polymer and nanoparticles separately, combining only at the printhead.
             </div>
           </div>
           <div class="level-card l2">
@@ -690,28 +904,70 @@
             <div class="level-title">How &amp; why does it matter?</div>
             <div class="level-desc">
               <strong>Methods:</strong> Pneumatic atomizer for polymer + Ultrasonic atomizer for Ag NPs → combined at 114° Y‑junction → deposited. Characterized by SEM, XRD, dielectric spectroscopy, TENG.<br><br>
-              <strong>Contribution:</strong> Solves the <strong>60‑year dispersion problem</strong>. Proves the problem is the mixing process, not the materials. <span style="color:#f59e0b;">Provides the multi‑material blending strategy</span> we propose to combine with P3.
+              <strong>Contribution:</strong> Solves the <strong>60‑year dispersion problem</strong>. Proves the problem is the mixing process, not the materials.
             </div>
           </div>
         </div>
         <div class="source-note">Source: Hwang et al. (2024) — Nano Energy</div>
       </div>
 
-      <!-- PAPER 3 -->
+      <!-- ========================================================== -->
+      <!-- PAPER 3 – ELECTROSTATIC FOCUSING + 3D PILLAR -->
+      <!-- ========================================================== -->
       <div class="paper-panel" id="panel-3">
-        <div class="diagram-placeholder">
-          <i class="fas fa-bolt" style="color:#f472b6;"></i>
-          <p style="color:#f472b6; font-weight:600;">Electrostatic Focusing · Ion‑Assisted Aerosol Lithography</p>
-          <p style="color:#8892a8; font-size:0.85rem;">Floating SiNₓ mask · Charged nanoparticles · Sub‑100 nm resolution · True 3D</p>
+        <div class="diagram-container">
+          <h4 style="color:#f472b6;">Electrostatic Focusing · Jung &amp; Choi 2019</h4>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px; padding:0.5rem; max-width:500px; margin:0 auto;">
+            <!-- ION CUSHION -->
+            <div class="ev-layer ev-ion" style="width:100%;">
+              <span style="font-size:1.4rem;">⚡</span>
+              <span class="label">ION CUSHION (Positive Charge)</span>
+            </div>
+            <div class="ev-connector">↓</div>
+            <!-- MASK -->
+            <div class="ev-layer ev-mask" style="width:100%;">
+              <span style="font-size:1.2rem;">⬜</span>
+              <span class="label">Floating Dielectric Mask (SiN<sub>x</sub>)</span>
+              <span class="hole"></span>
+            </div>
+            <div class="ev-connector">↓</div>
+            <!-- FIELD LINES -->
+            <div class="ev-layer ev-field" style="width:100%;">
+              <span class="label"><i class="fas fa-bolt"></i> Electric Field Focusing</span>
+              <div class="field-lines">
+                <div class="field-line"><span class="dot"></span></div>
+                <div class="field-line"><span class="dot"></span></div>
+                <div class="field-line"><span class="dot"></span></div>
+              </div>
+              <span style="color:#f472b6; font-size:0.7rem;">⬆️ Charged nanoparticles follow field lines</span>
+            </div>
+            <div class="ev-connector">↓</div>
+            <!-- PILLAR -->
+            <div class="ev-layer ev-pillar" style="width:100%;">
+              <span style="font-size:1.4rem;">🏗️</span>
+              <div class="pillar-block">
+                <div class="pillar-body"></div>
+                <span class="label">GROWING 3D NANOPILLAR</span>
+              </div>
+            </div>
+            <div class="ev-connector">↓</div>
+            <!-- SUBSTRATE -->
+            <div class="ev-layer ev-substrate" style="width:100%;">
+              <span style="font-size:1rem;">▬</span>
+              <span class="label">Substrate</span>
+              <div class="substrate-block"></div>
+            </div>
+          </div>
+          <div class="diagram-caption">Ion cushion → electrostatic lens → charged nanoparticles focus through mask hole → growing 3D nanopillar (<strong>&lt; 100 nm</strong>)</div>
         </div>
+
         <div class="level-grid">
           <div class="level-card l1">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
             <div class="level-title">What is the paper about?</div>
             <div class="level-desc">
               <strong>Title:</strong> Three‑dimensional nanoprinting via charged aerosol focusing<br>
-              <strong>Abstract:</strong> Uses a floating mask and electrostatic field to focus charged aerosols into 3D structures. Two regimes: growth mode and writing mode.<br>
-              <strong>Key Figures:</strong> Shows mask, electrostatic focusing, helix structures, and writing of letters "3D".
+              <strong>Abstract:</strong> Uses a floating mask and electrostatic field to focus charged aerosols into 3D structures. Two regimes: growth mode and writing mode.
             </div>
           </div>
           <div class="level-card l2">
@@ -733,12 +989,13 @@
             <div class="level-title">How &amp; why does it matter?</div>
             <div class="level-desc">
               <strong>Methods:</strong> Spark discharge generates charged nanoparticles (Pd, Cu, ~50 nm) → ions accumulate on SiNₓ mask (4 µm holes) → electric field funnels particles → 3D stage controls growth (~50 µm/h). Characterized by FE‑SEM, EDS, KFM.<br><br>
-              <strong>Contribution:</strong> Proves <strong>true 3D nano‑printing</strong> is possible using electrostatic fields instead of physical nozzles. <span style="color:#f472b6;">Provides the electrostatic focusing method</span> we propose to combine with P2.
+              <strong>Contribution:</strong> Proves <strong>true 3D nano‑printing</strong> is possible using electrostatic fields instead of physical nozzles.
             </div>
           </div>
         </div>
         <div class="source-note">Source: Jung et al. (2019) — Science (preprint)</div>
       </div>
+
     </div>
   </section>
 
@@ -962,6 +1219,17 @@
       document.querySelectorAll('.paper-panel').forEach(p => p.classList.remove('active'));
       document.getElementById(`panel-${num}`).classList.add('active');
     }
+
+    // ===== DISPERSION TOGGLE =====
+    document.getElementById('toggleDispersion').addEventListener('click', function() {
+      const container = document.getElementById('dispersionDiagram');
+      container.classList.toggle('show-dispersed');
+      if (container.classList.contains('show-dispersed')) {
+        this.innerHTML = '<i class="fas fa-undo-alt"></i> Show Pre‑Mixing (Agglomeration)';
+      } else {
+        this.innerHTML = '<i class="fas fa-sync-alt"></i> Click to Apply Mid‑Air Blending';
+      }
+    });
 
     // ===== PARTICLES =====
     (function() {

@@ -5,51 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aerosol Jet · 3-Level Analysis</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
+  <!-- AOS Library for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
   <style>
+    /* ================================================================
+       ROOT VARIABLES
+       ================================================================ */
+    :root {
+      --bg-primary: #0b0e1a;
+      --bg-secondary: #111627;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --text-main: #e2e8f0;
+      --text-muted: #8892a8;
+      --text-dim: #5a6478;
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45, 212, 191, 0.15);
+      --teal-glow: rgba(45, 212, 191, 0.3);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.15);
+      --rose: #f472b6;
+      --rose-dim: rgba(244, 114, 182, 0.15);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167, 139, 250, 0.15);
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background: #0b0e1a;
-      color: #e2e8f0;
-      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-body);
       font-weight: 300;
       line-height: 1.7;
       overflow-x: hidden;
     }
+
     h1, h2, h3, h4 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-heading);
       font-weight: 600;
       color: #fff;
     }
     h1 { font-size: 3.8rem; }
     h2 { font-size: 2.4rem; margin-bottom: 0.75rem; }
-    .text-muted { color: #8892a8; }
-    .text-teal { color: #2dd4bf; }
-    .text-amber { color: #f59e0b; }
-    .text-rose { color: #f472b6; }
-    .text-purple { color: #a78bfa; }
+    .text-muted { color: var(--text-muted); }
+    .text-teal { color: var(--teal); }
+    .text-amber { color: var(--amber); }
+    .text-rose { color: var(--rose); }
+    .text-purple { color: var(--purple); }
 
-    /* Progress bar */
+    /* ================================================================
+       PROGRESS BAR (Animated)
+       ================================================================ */
     .progress-container {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 2px;
+      width: 100%; height: 3px;
       background: rgba(255,255,255,0.03);
       z-index: 9999;
     }
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #2dd4bf, #f59e0b);
-      transition: width 0.15s;
+      background: linear-gradient(90deg, var(--teal), var(--amber), var(--rose));
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 20px var(--teal-glow);
     }
 
-    /* Sidebar */
+    /* ================================================================
+       SIDEBAR NAVIGATION (Animated)
+       ================================================================ */
     .sidebar {
       position: fixed;
       left: 24px;
@@ -58,39 +92,58 @@
       z-index: 999;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       background: rgba(11,14,26,0.7);
-      backdrop-filter: blur(12px);
-      padding: 12px 10px;
+      backdrop-filter: blur(16px);
+      padding: 10px 8px;
       border-radius: 40px;
       border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     }
     .sidebar a {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #5a6478;
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 500;
       padding: 4px 12px;
       border-radius: 20px;
-      transition: 0.3s;
+      transition: 0.3s ease;
+      position: relative;
     }
     .sidebar a .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #5a6478;
+      background: var(--text-dim);
+      transition: 0.3s ease;
       flex-shrink: 0;
     }
+    .sidebar a .dot::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: 0.3s ease;
+    }
     .sidebar a:hover { color: #fff; background: rgba(255,255,255,0.04); }
-    .sidebar a:hover .dot { background: #2dd4bf; }
+    .sidebar a:hover .dot { background: var(--teal); transform: scale(1.2); }
     .sidebar a.active { color: #fff; background: rgba(45,212,191,0.08); }
-    .sidebar a.active .dot { background: #2dd4bf; }
+    .sidebar a.active .dot { background: var(--teal); box-shadow: 0 0 16px var(--teal-glow); }
+    .sidebar a.active .dot::after { border-color: var(--teal); }
 
     @media (max-width: 768px) { .sidebar { display: none; } }
 
+    /* ================================================================
+       SECTIONS
+       ================================================================ */
     section {
       padding: 5rem 2rem 5rem 6rem;
       min-height: 100vh;
@@ -98,12 +151,31 @@
       align-items: center;
       justify-content: center;
       border-bottom: 1px solid rgba(255,255,255,0.02);
+      position: relative;
+      overflow: hidden;
     }
-    .container { max-width: 1100px; width: 100%; margin: 0 auto; }
+    section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(45,212,191,0.03) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
     @media (max-width: 768px) { section { padding: 3rem 1.2rem; } }
 
     /* ================================================================
-       HERO WITH SPLIT LAYOUT
+       HERO SECTION
        ================================================================ */
     .hero {
       position: relative;
@@ -113,6 +185,7 @@
       align-items: center;
       justify-content: center;
       text-align: left;
+      background: radial-gradient(ellipse at 20% 50%, rgba(45,212,191,0.05) 0%, transparent 60%);
     }
     #particle-canvas {
       position: absolute;
@@ -143,26 +216,40 @@
       padding: 0.2rem 1rem;
       border-radius: 30px;
       font-size: 0.7rem;
-      color: #8892a8;
+      color: var(--text-muted);
       border: 1px solid rgba(255,255,255,0.04);
+      transition: 0.3s;
+      cursor: default;
+    }
+    .hero-text .badge-row span:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--teal);
+      transform: translateY(-2px);
     }
     .hero-text h1 {
       font-size: 4.8rem;
       font-weight: 700;
       line-height: 1.05;
+      background: linear-gradient(135deg, #2dd4bf, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s ease-in-out infinite;
     }
-    .hero-text h1 .highlight-teal { color: #2dd4bf; }
-    .hero-text h1 .highlight-amber { color: #f59e0b; }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
     .hero-text .sub {
       font-size: 1.1rem;
-      color: #8892a8;
+      color: var(--text-muted);
       font-weight: 300;
       max-width: 550px;
       margin-top: 0.5rem;
     }
     .hero-text .scroll-hint {
       margin-top: 2rem;
-      color: #5a6478;
+      color: var(--text-dim);
       font-size: 0.8rem;
       animation: bounce 2s infinite;
     }
@@ -175,7 +262,13 @@
       border-radius: 20px;
       padding: 1.5rem;
       text-align: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+    .hero-diagram:hover {
+      border-color: rgba(45,212,191,0.2);
+      box-shadow: 0 8px 60px rgba(45,212,191,0.05);
     }
     .hero-diagram svg {
       max-width: 100%;
@@ -186,16 +279,16 @@
     .hero-diagram .diagram-label {
       margin-top: 0.8rem;
       font-size: 0.8rem;
-      color: #8892a8;
+      color: var(--text-muted);
       display: flex;
       justify-content: center;
       gap: 2rem;
       flex-wrap: wrap;
     }
     .hero-diagram .diagram-label span { display: flex; align-items: center; gap: 6px; }
-    .hero-diagram .diagram-label .dot-teal { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #2dd4bf; }
-    .hero-diagram .diagram-label .dot-amber { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f59e0b; }
-    .hero-diagram .diagram-label .dot-rose { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f472b6; }
+    .hero-diagram .diagram-label .dot-teal { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--teal); }
+    .hero-diagram .diagram-label .dot-amber { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--amber); }
+    .hero-diagram .diagram-label .dot-rose { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--rose); }
 
     @media (max-width: 900px) {
       .hero-content { grid-template-columns: 1fr; text-align: center; }
@@ -205,7 +298,28 @@
     }
 
     /* ================================================================
-       TABS
+       SECTION TAG
+       ================================================================ */
+    .section-tag {
+      display: inline-block;
+      background: var(--teal-dim);
+      color: var(--teal);
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.15rem 1rem;
+      border-radius: 20px;
+      border: 1px solid rgba(45,212,191,0.15);
+      transition: 0.3s;
+    }
+    .section-tag:hover {
+      background: rgba(45,212,191,0.2);
+      box-shadow: 0 0 30px rgba(45,212,191,0.05);
+    }
+
+    /* ================================================================
+       PAPER TABS (Animated)
        ================================================================ */
     .paper-tabs {
       display: flex;
@@ -216,26 +330,42 @@
     .paper-tabs button {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
-      color: #8892a8;
+      color: var(--text-muted);
       padding: 0.6rem 1.8rem;
       border-radius: 30px;
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .paper-tabs button:hover { background: rgba(255,255,255,0.06); color: #fff; }
-    .paper-tabs button.active { background: rgba(45,212,191,0.12); border-color: #2dd4bf; color: #2dd4bf; }
-    .paper-tabs button[data-paper="2"].active { background: rgba(245,158,11,0.12); border-color: #f59e0b; color: #f59e0b; }
-    .paper-tabs button[data-paper="3"].active { background: rgba(244,114,182,0.12); border-color: #f472b6; color: #f472b6; }
+    .paper-tabs button::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: 0.5s;
+    }
+    .paper-tabs button:hover::before { left: 100%; }
+    .paper-tabs button:hover { background: rgba(255,255,255,0.06); color: #fff; transform: translateY(-2px); }
+    .paper-tabs button.active {
+      background: var(--teal-dim);
+      border-color: var(--teal);
+      color: var(--teal);
+      box-shadow: 0 0 30px rgba(45,212,191,0.05);
+    }
+    .paper-tabs button[data-paper="2"].active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); box-shadow: 0 0 30px rgba(245,158,11,0.05); }
+    .paper-tabs button[data-paper="3"].active { background: var(--rose-dim); border-color: var(--rose); color: var(--rose); box-shadow: 0 0 30px rgba(244,114,182,0.05); }
 
-    .paper-panel { display: none; animation: fadeIn 0.4s ease; }
+    .paper-panel { display: none; animation: fadeSlide 0.5s ease; }
     .paper-panel.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ================================================================
-       3-LEVEL CARDS
+       3-LEVEL CARDS (Enhanced)
        ================================================================ */
     .level-grid {
       display: grid;
@@ -244,17 +374,30 @@
       margin-top: 1.5rem;
     }
     .level-card {
-      background: rgba(255,255,255,0.03);
+      background: var(--bg-card);
       border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 1.5rem;
-      transition: 0.3s;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
     }
-    .level-card:hover { background: rgba(255,255,255,0.06); }
+    .level-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .level-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
     .level-card .level-number {
       font-size: 1.2rem;
       font-weight: 700;
-      color: #5a6478;
+      color: var(--text-dim);
       margin-bottom: 0.2rem;
       display: flex;
       align-items: center;
@@ -274,28 +417,28 @@
       margin-bottom: 0.3rem;
     }
     .level-card .level-desc {
-      color: #8892a8;
+      color: var(--text-muted);
       font-size: 0.85rem;
       line-height: 1.6;
     }
     .level-card .level-desc strong { color: #fff; }
     .level-card .level-desc ul { padding-left: 1.2rem; margin-top: 0.3rem; }
-    .level-card .level-desc ul li { color: #8892a8; font-size: 0.8rem; padding: 0.1rem 0; }
+    .level-card .level-desc ul li { color: var(--text-muted); font-size: 0.8rem; padding: 0.1rem 0; }
 
-    .level-card.l1 { border-left: 3px solid #2dd4bf; }
-    .level-card.l2 { border-left: 3px solid #f59e0b; }
-    .level-card.l3 { border-left: 3px solid #f472b6; }
-    .level-card.l1 .badge { background: rgba(45,212,191,0.12); color: #2dd4bf; }
-    .level-card.l2 .badge { background: rgba(245,158,11,0.12); color: #f59e0b; }
-    .level-card.l3 .badge { background: rgba(244,114,182,0.12); color: #f472b6; }
-    .level-card.l1 .level-title { color: #2dd4bf; }
-    .level-card.l2 .level-title { color: #f59e0b; }
-    .level-card.l3 .level-title { color: #f472b6; }
+    .level-card.l1 { border-left: 3px solid var(--teal); }
+    .level-card.l2 { border-left: 3px solid var(--amber); }
+    .level-card.l3 { border-left: 3px solid var(--rose); }
+    .level-card.l1 .badge { background: var(--teal-dim); color: var(--teal); }
+    .level-card.l2 .badge { background: var(--amber-dim); color: var(--amber); }
+    .level-card.l3 .badge { background: var(--rose-dim); color: var(--rose); }
+    .level-card.l1 .level-title { color: var(--teal); }
+    .level-card.l2 .level-title { color: var(--amber); }
+    .level-card.l3 .level-title { color: var(--rose); }
 
     @media (max-width: 768px) { .level-grid { grid-template-columns: 1fr; } }
 
     /* ================================================================
-       DIAGRAM CONTAINERS
+       DIAGRAM CONTAINERS (Glass effect)
        ================================================================ */
     .diagram-container {
       background: rgba(255,255,255,0.02);
@@ -304,6 +447,12 @@
       padding: 1.5rem;
       margin: 1.5rem 0;
       text-align: center;
+      backdrop-filter: blur(4px);
+      transition: 0.4s;
+    }
+    .diagram-container:hover {
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
     }
     .diagram-container svg {
       max-width: 100%;
@@ -313,12 +462,12 @@
     }
     .diagram-caption {
       margin-top: 0.8rem;
-      color: #8892a8;
+      color: var(--text-muted);
       font-size: 0.8rem;
     }
 
     /* ================================================================
-       DISPERSION TOGGLE
+       DISPERSION TOGGLE (Enhanced)
        ================================================================ */
     .dispersion-grid {
       display: flex;
@@ -337,41 +486,60 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: #2dd4bf;
+      background: var(--teal);
       opacity: 0.8;
-      transition: all 0.4s;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: pulseDot 3s infinite;
+    }
+    .particle-dot:nth-child(2) { animation-delay: 0.2s; }
+    .particle-dot:nth-child(3) { animation-delay: 0.4s; }
+    .particle-dot:nth-child(4) { animation-delay: 0.6s; }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
     }
     .diagram-agglomeration .clumped-group {
       opacity: 1;
-      transition: opacity 0.5s;
+      transition: opacity 0.6s ease;
     }
     .diagram-agglomeration .dispersed-group {
       opacity: 0.3;
-      transition: opacity 0.5s;
+      transition: opacity 0.6s ease;
     }
     .diagram-agglomeration.show-dispersed .clumped-group {
-      opacity: 0.15;
+      opacity: 0.1;
     }
     .diagram-agglomeration.show-dispersed .dispersed-group {
       opacity: 1;
     }
+    .diagram-agglomeration.show-dispersed .particle-dot {
+      animation: none;
+      transform: scale(1);
+    }
     .toggle-btn {
-      background: rgba(45,212,191,0.12);
-      border: 1px solid #2dd4bf;
-      color: #e2e8f0;
+      background: var(--teal-dim);
+      border: 1px solid var(--teal);
+      color: var(--text-main);
       padding: 0.6rem 1.8rem;
       border-radius: 40px;
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-weight: 600;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.3s ease;
       margin-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
     }
-    .toggle-btn:hover { background: rgba(45,212,191,0.2); }
+    .toggle-btn:hover {
+      background: rgba(45,212,191,0.2);
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(45,212,191,0.1);
+    }
+    .toggle-btn:active { transform: scale(0.96); }
 
     /* ================================================================
-       COMPARE
+       COMPARE CARDS (Enhanced)
        ================================================================ */
     .compare-grid {
       display: grid;
@@ -380,30 +548,38 @@
       margin: 1.5rem 0;
     }
     .compare-card {
-      background: rgba(255,255,255,0.03);
+      background: var(--bg-card);
       border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 1.2rem 1.5rem;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .compare-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
     }
     .compare-card .header { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.3rem; }
     .compare-card .row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.8rem; }
-    .compare-card .row .key { color: #5a6478; }
-    .compare-card .row .val { color: #8892a8; }
-    .compare-card .row .val.highlight { color: #2dd4bf; font-weight: 600; }
+    .compare-card .row .key { color: var(--text-dim); }
+    .compare-card .row .val { color: var(--text-muted); }
+    .compare-card .row .val.highlight { color: var(--teal); font-weight: 600; }
     @media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; } }
 
     /* ================================================================
-       GAP
+       GAP (Enhanced)
        ================================================================ */
     .gap-text {
-      background: rgba(255,255,255,0.03);
+      background: var(--bg-card);
       padding: 1.5rem 2rem;
-      border-radius: 12px;
+      border-radius: 16px;
       margin: 1.5rem 0;
-      border-left: 3px solid #a78bfa;
+      border-left: 3px solid var(--purple);
+      transition: 0.4s;
     }
+    .gap-text:hover { border-color: var(--purple); box-shadow: 0 8px 40px rgba(167,139,250,0.05); }
     .gap-text ul { list-style: none; padding-left: 1.5rem; }
-    .gap-text ul li { padding: 0.2rem 0; color: #8892a8; font-size: 0.95rem; }
+    .gap-text ul li { padding: 0.2rem 0; color: var(--text-muted); font-size: 0.95rem; }
     .gap-text ul li strong { color: #fff; }
 
     .venn-wrapper {
@@ -425,19 +601,24 @@
       flex-direction: column;
       padding: 1rem;
       border: 2px solid rgba(255,255,255,0.06);
-      transition: 0.3s;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: default;
+      background: var(--bg-card);
     }
-    .venn-circle:hover { transform: scale(1.04); }
-    .venn-circle.c1 { background: rgba(45,212,191,0.06); border-color: #2dd4bf; }
-    .venn-circle.c2 { background: rgba(245,158,11,0.06); border-color: #f59e0b; }
-    .venn-circle.c3 { background: rgba(244,114,182,0.06); border-color: #f472b6; }
-    .venn-circle .label { font-size: 0.65rem; color: #5a6478; font-weight: 600; text-transform: uppercase; }
+    .venn-circle:hover {
+      transform: scale(1.05);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .venn-circle.c1 { border-color: var(--teal); background: rgba(45,212,191,0.04); }
+    .venn-circle.c2 { border-color: var(--amber); background: rgba(245,158,11,0.04); }
+    .venn-circle.c3 { border-color: var(--rose); background: rgba(244,114,182,0.04); }
+    .venn-circle .label { font-size: 0.65rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; }
     .venn-circle .title { font-size: 0.95rem; font-weight: 600; margin: 0.2rem 0; }
-    .venn-circle .desc { font-size: 0.7rem; color: #8892a8; }
+    .venn-circle .desc { font-size: 0.7rem; color: var(--text-muted); }
     .venn-gap {
       background: rgba(167,139,250,0.08);
-      border: 2px solid #a78bfa;
+      border: 2px solid var(--purple);
       border-radius: 50%;
       width: 120px;
       height: 120px;
@@ -447,8 +628,13 @@
       text-align: center;
       padding: 1rem;
       flex-shrink: 0;
+      animation: pulseGlow 3s ease-in-out infinite;
     }
-    .venn-gap .big { color: #a78bfa; font-weight: 700; font-size: 0.95rem; line-height: 1.3; }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(167,139,250,0.1); }
+      50% { box-shadow: 0 0 40px rgba(167,139,250,0.2); }
+    }
+    .venn-gap .big { color: var(--purple); font-weight: 700; font-size: 0.95rem; line-height: 1.3; }
     @media (max-width: 768px) {
       .venn-circle { width: 110px; height: 110px; }
       .venn-gap { width: 90px; height: 90px; }
@@ -456,7 +642,7 @@
     }
 
     /* ================================================================
-       QUESTION
+       QUESTION BOX (Enhanced)
        ================================================================ */
     .question-box {
       background: linear-gradient(135deg, rgba(45,212,191,0.04), rgba(167,139,250,0.04));
@@ -465,17 +651,22 @@
       padding: 2rem 2.5rem;
       margin: 1.5rem 0;
       text-align: center;
+      transition: 0.4s;
+    }
+    .question-box:hover {
+      border-color: rgba(45,212,191,0.2);
+      box-shadow: 0 8px 40px rgba(45,212,191,0.05);
     }
     .question-box .q {
       font-size: 1.35rem;
       font-weight: 600;
       color: #c4b5fd;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-heading);
       line-height: 1.4;
     }
 
     /* ================================================================
-       VERDICT
+       VERDICT CARDS (Enhanced)
        ================================================================ */
     .verdict-grid {
       display: grid;
@@ -484,47 +675,50 @@
       margin: 1.5rem 0;
     }
     .verdict-card {
-      background: rgba(255,255,255,0.03);
+      background: var(--bg-card);
       border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 1.5rem;
       text-align: center;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .verdict-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
     }
     .verdict-card .score {
       font-size: 2.2rem;
       font-weight: 700;
       margin: 0.3rem 0;
     }
-    .verdict-card .label { font-size: 0.65rem; color: #5a6478; text-transform: uppercase; letter-spacing: 0.05em; }
-    .verdict-card .desc { color: #8892a8; font-size: 0.85rem; margin-top: 0.3rem; }
+    .verdict-card .label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .verdict-card .desc { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem; }
     .verdict-card .bars { display: flex; justify-content: center; gap: 6px; margin-top: 0.5rem; }
-    .verdict-card .bars .bar { width: 20px; height: 6px; border-radius: 4px; background: rgba(255,255,255,0.06); }
-    .verdict-card .bars .bar.fill { background: #2dd4bf; }
-    .verdict-card.b2 .bars .bar.fill { background: #f59e0b; }
-    .verdict-card.b3 .bars .bar.fill { background: #f472b6; }
+    .verdict-card .bars .bar {
+      width: 20px; height: 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      transition: 0.3s;
+    }
+    .verdict-card .bars .bar.fill { background: var(--teal); }
+    .verdict-card.b2 .bars .bar.fill { background: var(--amber); }
+    .verdict-card.b3 .bars .bar.fill { background: var(--rose); }
+    .verdict-card:hover .bars .bar { transform: scaleY(1.5); }
     @media (max-width: 768px) { .verdict-grid { grid-template-columns: 1fr; } }
 
+    /* ================================================================
+       FOOTER
+       ================================================================ */
     footer {
       text-align: center;
       padding: 2rem;
-      color: #5a6478;
+      color: var(--text-dim);
       font-size: 0.75rem;
       border-top: 1px solid rgba(255,255,255,0.03);
     }
-    .source-note { font-size: 0.7rem; color: #5a6478; margin-top: 0.5rem; font-style: italic; }
 
-    .section-tag {
-      display: inline-block;
-      background: rgba(45,212,191,0.12);
-      color: #2dd4bf;
-      font-size: 0.65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 0.15rem 1rem;
-      border-radius: 20px;
-      border: 1px solid rgba(45,212,191,0.15);
-    }
+    .source-note { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.5rem; font-style: italic; }
 
     /* ================================================================
        PAPER 3 SVG STYLES
@@ -535,31 +729,38 @@
       justify-content: center;
       gap: 12px;
       padding: 10px 18px;
-      border-radius: 10px;
+      border-radius: 12px;
       width: 100%;
       min-height: 50px;
       border: 2px solid rgba(255,255,255,0.06);
       background: rgba(255,255,255,0.02);
+      transition: 0.3s;
     }
+    .ev-layer:hover { border-color: rgba(255,255,255,0.12); }
     .ev-layer .label { font-weight: 600; font-size: 0.85rem; }
-    .ev-ion { border-color: #f59e0b; background: rgba(245,158,11,0.06); }
-    .ev-ion .label { color: #f59e0b; }
-    .ev-mask { border-color: #f59e0b; background: rgba(245,158,11,0.04); }
+    .ev-ion { border-color: var(--amber); background: rgba(245,158,11,0.06); }
+    .ev-ion .label { color: var(--amber); }
+    .ev-mask { border-color: var(--amber); background: rgba(245,158,11,0.04); }
     .ev-mask .label { color: #e2e8f0; }
     .ev-mask .hole {
       display: inline-block;
       width: 28px; height: 28px;
       border-radius: 50%;
-      border: 2px solid #f59e0b;
+      border: 2px solid var(--amber);
       background: #0b0e1a;
       margin-left: 8px;
+      animation: pulseHole 3s ease-in-out infinite;
     }
-    .ev-field { border-color: #2dd4bf; background: rgba(45,212,191,0.05); flex-direction: column; gap: 4px; }
-    .ev-field .label { color: #2dd4bf; }
+    @keyframes pulseHole {
+      0%, 100% { box-shadow: 0 0 10px rgba(245,158,11,0.1); }
+      50% { box-shadow: 0 0 25px rgba(245,158,11,0.2); }
+    }
+    .ev-field { border-color: var(--teal); background: rgba(45,212,191,0.05); flex-direction: column; gap: 4px; }
+    .ev-field .label { color: var(--teal); }
     .ev-field .field-lines { display: flex; gap: 16px; justify-content: center; width: 100%; }
     .ev-field .field-line {
       width: 3px; height: 28px;
-      background: #2dd4bf;
+      background: var(--teal);
       opacity: 0.5;
       border-radius: 4px;
       position: relative;
@@ -568,23 +769,35 @@
       position: absolute;
       width: 10px; height: 10px;
       border-radius: 50%;
-      background: #f472b6;
+      background: var(--rose);
       top: -4px; left: -3.5px;
-      box-shadow: 0 0 12px #f472b6;
+      box-shadow: 0 0 16px rgba(244,114,182,0.4);
+      animation: fallDot 2s ease-in infinite;
     }
-    .ev-pillar { border-color: #2dd4bf; background: rgba(45,212,191,0.06); min-height: 70px; }
-    .ev-pillar .label { color: #2dd4bf; font-weight: 700; font-size: 1rem; }
+    .ev-field .field-line:nth-child(2) .dot { animation-delay: 0.4s; }
+    .ev-field .field-line:nth-child(3) .dot { animation-delay: 0.8s; }
+    @keyframes fallDot {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(32px); opacity: 0.3; }
+    }
+    .ev-pillar { border-color: var(--teal); background: rgba(45,212,191,0.06); min-height: 70px; }
+    .ev-pillar .label { color: var(--teal); font-weight: 700; font-size: 1rem; }
     .ev-pillar .pillar-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
     .ev-pillar .pillar-body {
       width: 40px; height: 45px;
-      background: linear-gradient(to bottom, #2dd4bf, #f59e0b);
+      background: linear-gradient(to bottom, var(--teal), var(--amber));
       border-radius: 6px 6px 0 0;
-      border: 2px solid #2dd4bf;
+      border: 2px solid var(--teal);
+      animation: growPillar 4s ease-in-out infinite;
+    }
+    @keyframes growPillar {
+      0%, 100% { height: 45px; opacity: 0.8; }
+      50% { height: 55px; opacity: 1; }
     }
     .ev-substrate { border-color: #334155; background: rgba(51,65,85,0.15); min-height: 35px; }
     .ev-substrate .label { color: #94a3b8; }
     .ev-substrate .substrate-block { width: 60%; height: 14px; background: #334155; border-radius: 4px; }
-    .ev-connector { display: flex; justify-content: center; align-items: center; font-size: 1.2rem; color: #5a6478; padding: 2px 0; }
+    .ev-connector { display: flex; justify-content: center; align-items: center; font-size: 1.2rem; color: var(--text-dim); padding: 2px 0; }
 
     @media (max-width: 600px) {
       .ev-layer { flex-wrap: wrap; padding: 10px; min-height: 40px; }
@@ -592,6 +805,12 @@
       .ev-field .field-line { height: 20px; }
       .ev-pillar .pillar-body { height: 30px; width: 30px; }
     }
+
+    /* ================================================================
+       AOS Overrides (smoother animations)
+       ================================================================ */
+    [data-aos] { pointer-events: none; }
+    [data-aos].aos-animate { pointer-events: auto; }
   </style>
 </head>
 <body>
@@ -622,8 +841,7 @@
           <span><i class="fas fa-microchip"></i> P3 · Jung &amp; Choi 2019</span>
         </div>
         <h1>
-          <span class="highlight-teal">Three</span> Papers.<br>
-          <span class="highlight-amber">One</span> Mission.
+          Three Papers.<br>One Mission.
         </h1>
         <p class="sub">
           Three research teams. Three distinct strategies. One shared mission — <br>print electronics, sensors, and 3D structures with aerosol precision.
@@ -631,97 +849,60 @@
         <div class="scroll-hint"><i class="fas fa-chevron-down"></i> Scroll to explore</div>
       </div>
 
-      <!-- UPDATED HERO DIAGRAM: Traditional vs AJP -->
-      <div class="hero-diagram">
+      <!-- Hero Diagram -->
+      <div class="hero-diagram" data-aos="fade-up" data-aos-delay="200">
         <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
-          <!-- Title -->
           <text x="250" y="22" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle" font-weight="600">Traditional 3D Printing vs Aerosol Jet Printing</text>
-
-          <!-- ===== LEFT: Traditional Extrusion ===== -->
           <rect x="10" y="40" width="220" height="280" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
           <text x="120" y="64" font-family="Inter" font-size="12" fill="#f472b6" text-anchor="middle" font-weight="600">❌ Traditional Extrusion</text>
-
-          <!-- Nozzle (thick, touching) -->
           <rect x="95" y="130" width="30" height="50" rx="4" fill="#f472b6" opacity="0.3" stroke="#f472b6" stroke-width="1.5"/>
           <text x="110" y="120" font-family="Inter" font-size="8" fill="#f472b6" text-anchor="middle">Nozzle</text>
-
-          <!-- Thick filament -->
           <rect x="90" y="180" width="40" height="8" rx="2" fill="#f472b6" opacity="0.4"/>
           <rect x="85" y="192" width="50" height="6" rx="2" fill="#f472b6" opacity="0.3"/>
           <rect x="80" y="202" width="60" height="6" rx="2" fill="#f472b6" opacity="0.2"/>
-
-          <!-- Clog warning -->
           <text x="110" y="100" font-family="Inter" font-size="14" fill="#f472b6" text-anchor="middle">⚠️</text>
           <text x="110" y="115" font-family="Inter" font-size="8" fill="#f472b6" text-anchor="middle">Clogging risk</text>
-
-          <!-- Flat substrate -->
           <rect x="40" y="215" width="160" height="14" rx="3" fill="#334155"/>
           <text x="120" y="248" font-family="Inter" font-size="9" fill="#5a6478" text-anchor="middle">Flat substrate only</text>
-
-          <!-- Touch indicator -->
           <path d="M110 180 L110 215" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.5"/>
           <text x="125" y="200" font-family="Inter" font-size="7" fill="#f472b6" opacity="0.7">✕ Contact</text>
-
-          <!-- Limitations -->
           <text x="120" y="278" font-family="Inter" font-size="9" fill="#5a6478" text-anchor="middle">✕ Physical contact required</text>
           <text x="120" y="294" font-family="Inter" font-size="9" fill="#5a6478" text-anchor="middle">✕ Only flat surfaces</text>
           <text x="120" y="310" font-family="Inter" font-size="9" fill="#5a6478" text-anchor="middle">✕ Nozzle clogs easily</text>
 
-          <!-- ===== RIGHT: AJP ===== -->
           <rect x="250" y="40" width="240" height="280" rx="12" fill="rgba(45,212,191,0.04)" stroke="rgba(45,212,191,0.15)" stroke-width="1"/>
           <text x="370" y="64" font-family="Inter" font-size="12" fill="#2dd4bf" text-anchor="middle" font-weight="600">✅ Aerosol Jet Printing</text>
-
-          <!-- Atomizer -->
           <rect x="300" y="80" width="60" height="28" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
           <text x="330" y="95" font-family="Inter" font-size="8" fill="#f59e0b" text-anchor="middle">Atomizer</text>
           <text x="330" y="105" font-family="Inter" font-size="6" fill="#5a6478" text-anchor="middle">(Mist)</text>
-
-          <!-- Mist droplets -->
           <circle cx="320" cy="75" r="4" fill="#2dd4bf" opacity="0.6"/>
           <circle cx="335" cy="70" r="3" fill="#2dd4bf" opacity="0.5"/>
           <circle cx="345" cy="78" r="5" fill="#2dd4bf" opacity="0.7"/>
           <circle cx="355" cy="68" r="3" fill="#2dd4bf" opacity="0.4"/>
           <circle cx="325" cy="82" r="4" fill="#2dd4bf" opacity="0.5"/>
-
-          <!-- Carrier gas -->
           <line x1="290" y1="115" x2="410" y2="115" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
           <text x="350" y="112" font-family="Inter" font-size="7" fill="#f59e0b" text-anchor="middle" opacity="0.8">Carrier Gas</text>
-
-          <!-- Sheath gas arrows -->
-          <path d="M280 y="135" L280 165 L285 165" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <path d="M280 135 L280 165 L285 165" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
           <text x="275" y="155" font-family="Inter" font-size="6" fill="#10b981" text-anchor="end">Sheath Gas</text>
-
           <path d="M420 135 L420 165 L415 165" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
           <text x="425" y="155" font-family="Inter" font-size="6" fill="#10b981" text-anchor="start">Sheath Gas</text>
-
-          <!-- Focused stream -->
           <path d="M370 118 L370 210" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.5"/>
           <path d="M365 118 L365 210" fill="none" stroke="#2dd4bf" stroke-width="1.5" opacity="0.3"/>
           <path d="M375 118 L375 210" fill="none" stroke="#2dd4bf" stroke-width="1.5" opacity="0.3"/>
-
-          <!-- Nozzle -->
           <rect x="345" y="145" width="50" height="20" rx="6" fill="none" stroke="#2dd4bf" stroke-width="1.5"/>
           <text x="370" y="160" font-family="Inter" font-size="7" fill="#2dd4bf" text-anchor="middle">Nozzle</text>
-
-          <!-- Stand-off distance -->
           <path d="M350 170 L350 185" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2 2" opacity="0.6"/>
           <text x="340" y="180" font-family="Inter" font-size="6" fill="#f59e0b" text-anchor="end" opacity="0.8">1-5 mm</text>
-
-          <!-- Curved substrate (golf ball) -->
           <path d="M280 220 Q370 245 460 220" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.5"/>
           <path d="M290 228 Q370 253 450 228" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.3"/>
           <circle cx="370" cy="230" r="4" fill="#2dd4bf" opacity="0.5"/>
           <text x="370" y="265" font-family="Inter" font-size="9" fill="#5a6478" text-anchor="middle">Curved / conformal surfaces</text>
-
-          <!-- Advantages -->
           <text x="370" y="292" font-family="Inter" font-size="9" fill="#2dd4bf" text-anchor="middle">✓ Non-contact (1‑5mm stand‑off)</text>
           <text x="370" y="308" font-family="Inter" font-size="9" fill="#2dd4bf" text-anchor="middle">✓ Conformal on curved surfaces</text>
           <text x="370" y="324" font-family="Inter" font-size="9" fill="#2dd4bf" text-anchor="middle">✓ Sheath gas prevents clogging</text>
 
-          <!-- ===== DIVIDER ===== -->
           <line x1="235" y1="50" x2="235" y2="310" stroke="#5a6478" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
 
-          <!-- ===== LEGEND ===== -->
           <rect x="30" y="345" width="440" height="40" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
           <text x="50" y="370" font-family="Inter" font-size="8" fill="#5a6478">●</text>
           <text x="62" y="370" font-family="Inter" font-size="8" fill="#8892a8">Mist droplets</text>
@@ -742,15 +923,15 @@
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAPERS SECTION (unchanged from previous working version)        -->
+  <!-- PAPERS SECTION -->
   <!-- ================================================================ -->
   <section id="papers">
     <div class="container">
       <div class="section-tag">Section 01 · The three papers</div>
-      <h2>3‑Level Analysis</h2>
-      <p class="text-muted" style="max-width:700px;">Each paper is analyzed at three depths. Click a tab to switch papers.</p>
+      <h2 data-aos="fade-up">3‑Level Analysis</h2>
+      <p class="text-muted" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">Each paper is analyzed at three depths. Click a tab to switch papers.</p>
 
-      <div class="paper-tabs">
+      <div class="paper-tabs" data-aos="fade-up" data-aos-delay="150">
         <button class="active" data-paper="1" onclick="switchPaper(1)">📄 Paper 1 · Wilkinson</button>
         <button data-paper="2" onclick="switchPaper(2)">🧪 Paper 2 · Hwang</button>
         <button data-paper="3" onclick="switchPaper(3)">⚡ Paper 3 · Jung</button>
@@ -758,8 +939,8 @@
 
       <!-- PAPER 1 -->
       <div class="paper-panel active" id="panel-1">
-        <div class="diagram-container">
-          <h4 style="color:#2dd4bf;">AJP Process · Wilkinson &amp; Smith 2019</h4>
+        <div class="diagram-container" data-aos="fade-up">
+          <h4 style="color:var(--teal);">AJP Process · Wilkinson &amp; Smith 2019</h4>
           <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" style="max-width:750px; width:100%; height:auto;">
             <rect x="20" y="130" width="90" height="60" rx="6" fill="none" stroke="#2dd4bf" stroke-width="2"/>
             <text x="65" y="170" font-family="Inter" font-size="13" fill="#e2e8f0" text-anchor="middle">Atomizer</text>
@@ -793,7 +974,7 @@
         </div>
 
         <div class="level-grid">
-          <div class="level-card l1">
+          <div class="level-card l1" data-aos="fade-up" data-aos-delay="50">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
             <div class="level-title">What is the paper about?</div>
             <div class="level-desc">
@@ -802,7 +983,7 @@
               <strong>Key Figures:</strong> Shows the AJP process flow and deposition parameters.
             </div>
           </div>
-          <div class="level-card l2">
+          <div class="level-card l2" data-aos="fade-up" data-aos-delay="100">
             <div class="level-number"><span>L2</span> <span class="badge">Understand</span></div>
             <div class="level-title">What did they do &amp; find?</div>
             <div class="level-desc">
@@ -815,7 +996,7 @@
               </ul>
             </div>
           </div>
-          <div class="level-card l3">
+          <div class="level-card l3" data-aos="fade-up" data-aos-delay="150">
             <div class="level-number"><span>L3</span> <span class="badge">Deep Dive</span></div>
             <div class="level-title">How &amp; why does it matter?</div>
             <div class="level-desc">
@@ -829,8 +1010,8 @@
 
       <!-- PAPER 2 -->
       <div class="paper-panel" id="panel-2">
-        <div class="diagram-container">
-          <h4 style="color:#f59e0b;">Mid‑Air Blending · Hwang &amp; Choi 2024</h4>
+        <div class="diagram-container" data-aos="fade-up">
+          <h4 style="color:var(--amber);">Mid‑Air Blending · Hwang &amp; Choi 2024</h4>
           <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" style="max-width:600px; width:100%; height:auto;">
             <rect x="30" y="40" width="120" height="60" rx="8" fill="none" stroke="#f59e0b" stroke-width="2"/>
             <text x="90" y="75" font-family="Inter" font-size="12" fill="#e2e8f0" text-anchor="middle">Polymer Aerosol</text>
@@ -861,8 +1042,8 @@
         </div>
 
         <!-- Agglomeration vs Dispersion Toggle -->
-        <div class="diagram-container">
-          <h4 style="color:#f59e0b;">Dispersion: Old Problem vs. New Solution</h4>
+        <div class="diagram-container" data-aos="fade-up" data-aos-delay="100">
+          <h4 style="color:var(--amber);">Dispersion: Old Problem vs. New Solution</h4>
           <div class="diagram-agglomeration" id="dispersionDiagram">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center; max-width:500px; margin:0 auto;">
               <!-- Left: Agglomeration -->
@@ -904,7 +1085,7 @@
         </div>
 
         <div class="level-grid">
-          <div class="level-card l1">
+          <div class="level-card l1" data-aos="fade-up" data-aos-delay="50">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
             <div class="level-title">What is the paper about?</div>
             <div class="level-desc">
@@ -912,7 +1093,7 @@
               <strong>Abstract:</strong> Novel method that achieves perfect dispersion by atomizing polymer and nanoparticles separately, combining only at the printhead.
             </div>
           </div>
-          <div class="level-card l2">
+          <div class="level-card l2" data-aos="fade-up" data-aos-delay="100">
             <div class="level-number"><span>L2</span> <span class="badge">Understand</span></div>
             <div class="level-title">What did they do &amp; find?</div>
             <div class="level-desc">
@@ -926,7 +1107,7 @@
               </ul>
             </div>
           </div>
-          <div class="level-card l3">
+          <div class="level-card l3" data-aos="fade-up" data-aos-delay="150">
             <div class="level-number"><span>L3</span> <span class="badge">Deep Dive</span></div>
             <div class="level-title">How &amp; why does it matter?</div>
             <div class="level-desc">
@@ -940,8 +1121,8 @@
 
       <!-- PAPER 3 -->
       <div class="paper-panel" id="panel-3">
-        <div class="diagram-container">
-          <h4 style="color:#f472b6;">Electrostatic Focusing · Jung &amp; Choi 2019</h4>
+        <div class="diagram-container" data-aos="fade-up">
+          <h4 style="color:var(--rose);">Electrostatic Focusing · Jung &amp; Choi 2019</h4>
           <div style="display:flex; flex-direction:column; align-items:center; gap:6px; padding:0.5rem; max-width:500px; margin:0 auto;">
             <!-- ION CUSHION -->
             <div class="ev-layer ev-ion" style="width:100%;">
@@ -987,7 +1168,7 @@
         </div>
 
         <div class="level-grid">
-          <div class="level-card l1">
+          <div class="level-card l1" data-aos="fade-up" data-aos-delay="50">
             <div class="level-number"><span>L1</span> <span class="badge">Scan</span></div>
             <div class="level-title">What is the paper about?</div>
             <div class="level-desc">
@@ -995,7 +1176,7 @@
               <strong>Abstract:</strong> Uses a floating mask and electrostatic field to focus charged aerosols into 3D structures. Two regimes: growth mode and writing mode.
             </div>
           </div>
-          <div class="level-card l2">
+          <div class="level-card l2" data-aos="fade-up" data-aos-delay="100">
             <div class="level-number"><span>L2</span> <span class="badge">Understand</span></div>
             <div class="level-title">What did they do &amp; find?</div>
             <div class="level-desc">
@@ -1009,7 +1190,7 @@
               </ul>
             </div>
           </div>
-          <div class="level-card l3">
+          <div class="level-card l3" data-aos="fade-up" data-aos-delay="150">
             <div class="level-number"><span>L3</span> <span class="badge">Deep Dive</span></div>
             <div class="level-title">How &amp; why does it matter?</div>
             <div class="level-desc">
@@ -1030,12 +1211,12 @@
   <section id="compare">
     <div class="container">
       <div class="section-tag">Section 02 · Side by side</div>
-      <h2>Compare the three</h2>
-      <p class="text-muted" style="max-width:700px;">Every line is a fact pulled directly from the papers.</p>
+      <h2 data-aos="fade-up">Compare the three</h2>
+      <p class="text-muted" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">Every line is a fact pulled directly from the papers.</p>
 
       <div class="compare-grid">
-        <div class="compare-card" style="border-top:3px solid #2dd4bf;">
-          <div class="header" style="color:#2dd4bf;">P1 · Wilkinson 2019</div>
+        <div class="compare-card" style="border-top:3px solid var(--teal);" data-aos="fade-up" data-aos-delay="50">
+          <div class="header" style="color:var(--teal);">P1 · Wilkinson 2019</div>
           <div class="row"><span class="key">Core Focus</span><span class="val">Review of AJP fundamentals</span></div>
           <div class="row"><span class="key">Resolution</span><span class="val">~10 µm</span></div>
           <div class="row"><span class="key">Dimension</span><span class="val">2D / 2.5D</span></div>
@@ -1043,8 +1224,8 @@
           <div class="row"><span class="key">Driving Force</span><span class="val">Gas flow</span></div>
           <div class="row"><span class="key">Key Limitation</span><span class="val">Overspray · Empirical ink</span></div>
         </div>
-        <div class="compare-card" style="border-top:3px solid #f59e0b;">
-          <div class="header" style="color:#f59e0b;">P2 · Hwang 2024</div>
+        <div class="compare-card" style="border-top:3px solid var(--amber);" data-aos="fade-up" data-aos-delay="100">
+          <div class="header" style="color:var(--amber);">P2 · Hwang 2024</div>
           <div class="row"><span class="key">Core Focus</span><span class="val">Multi‑material blending</span></div>
           <div class="row"><span class="key">Resolution</span><span class="val">Micro‑scale</span></div>
           <div class="row"><span class="key">Dimension</span><span class="val">2D films + stacked 3D</span></div>
@@ -1052,8 +1233,8 @@
           <div class="row"><span class="key">Driving Force</span><span class="val">Dual‑gas atomization</span></div>
           <div class="row"><span class="key">Key Limitation</span><span class="val">Micro‑scale only</span></div>
         </div>
-        <div class="compare-card" style="border-top:3px solid #f472b6;">
-          <div class="header" style="color:#f472b6;">P3 · Jung 2019</div>
+        <div class="compare-card" style="border-top:3px solid var(--rose);" data-aos="fade-up" data-aos-delay="150">
+          <div class="header" style="color:var(--rose);">P3 · Jung 2019</div>
           <div class="row"><span class="key">Core Focus</span><span class="val">3D nano‑printing</span></div>
           <div class="row"><span class="key">Resolution</span><span class="val highlight">&lt; 100 nm</span></div>
           <div class="row"><span class="key">Dimension</span><span class="val highlight">True 3D</span></div>
@@ -1070,49 +1251,49 @@
   <!-- ================================================================ -->
   <section id="gap">
     <div class="container">
-      <div class="section-tag" style="background:rgba(167,139,250,0.12); color:#a78bfa; border-color:rgba(167,139,250,0.15);">Section 03 · The missing link</div>
-      <h2>Where do they connect?</h2>
-      <p class="text-muted" style="max-width:700px;">Each paper solves a specific piece. The gap is where they don't overlap.</p>
+      <div class="section-tag" style="background:rgba(167,139,250,0.12); color:var(--purple); border-color:rgba(167,139,250,0.15);">Section 03 · The missing link</div>
+      <h2 data-aos="fade-up">Where do they connect?</h2>
+      <p class="text-muted" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">Each paper solves a specific piece. The gap is where they don't overlap.</p>
 
-      <div class="gap-text">
+      <div class="gap-text" data-aos="fade-up" data-aos-delay="150">
         <p style="color:#fff; font-size:1rem; font-weight:500;">
-          <i class="fas fa-exclamation-triangle" style="color:#a78bfa; margin-right:10px;"></i>
-          <span style="color:#a78bfa;">Current approaches remain fragmented:</span>
+          <i class="fas fa-exclamation-triangle" style="color:var(--purple); margin-right:10px;"></i>
+          <span style="color:var(--purple);">Current approaches remain fragmented:</span>
         </p>
         <ul>
-          <li><span style="color:#f59e0b;">Hwang et al. (2024)</span> demonstrates multi‑material blending but is limited to <strong>micro‑scale</strong> 2.5D structures (&gt; 1 µm).</li>
-          <li><span style="color:#f472b6;">Jung et al. (2019)</span> achieves <strong>sub‑100 nm</strong> 3D nano‑structuring but strictly with <strong>single metals</strong>.</li>
-          <li style="color:#fff; font-weight:500;"><span style="color:#a78bfa;">No single process</span> has unified dynamic in‑flight multi‑material blending with electrostatically guided vertical nano‑construction.</li>
+          <li><span style="color:var(--amber);">Hwang et al. (2024)</span> demonstrates multi‑material blending but is limited to <strong>micro‑scale</strong> 2.5D structures (&gt; 1 µm).</li>
+          <li><span style="color:var(--rose);">Jung et al. (2019)</span> achieves <strong>sub‑100 nm</strong> 3D nano‑structuring but strictly with <strong>single metals</strong>.</li>
+          <li style="color:#fff; font-weight:500;"><span style="color:var(--purple);">No single process</span> has unified dynamic in‑flight multi‑material blending with electrostatically guided vertical nano‑construction.</li>
         </ul>
       </div>
 
       <div class="venn-wrapper">
-        <div class="venn-circle c1">
+        <div class="venn-circle c1" data-aos="zoom-in" data-aos-delay="50">
           <div class="label">Paper 1</div>
           <div class="title">Structural Flexibility</div>
           <div class="desc">1‑5 mm stand‑off · Conformal</div>
         </div>
-        <div style="font-size:1.5rem; color:#5a6478;">+</div>
-        <div class="venn-circle c2">
+        <div style="font-size:1.5rem; color:var(--text-dim);">+</div>
+        <div class="venn-circle c2" data-aos="zoom-in" data-aos-delay="100">
           <div class="label">Paper 2</div>
           <div class="title">Homogeneous Blending</div>
           <div class="desc">Mid‑air mixing · No agglomeration</div>
         </div>
-        <div style="font-size:1.5rem; color:#5a6478;">+</div>
-        <div class="venn-circle c3">
+        <div style="font-size:1.5rem; color:var(--text-dim);">+</div>
+        <div class="venn-circle c3" data-aos="zoom-in" data-aos-delay="150">
           <div class="label">Paper 3</div>
           <div class="title">Atomic Precision</div>
           <div class="desc">&lt; 100 nm · 3D architectures</div>
         </div>
-        <div style="font-size:1.5rem; color:#5a6478;">=</div>
-        <div class="venn-gap">
-          <div class="big">The Gap<br><span style="font-size:0.65rem; font-weight:400; color:#8892a8;">No unified<br>multi‑material<br>+ 3D nano</span></div>
+        <div style="font-size:1.5rem; color:var(--text-dim);">=</div>
+        <div class="venn-gap" data-aos="zoom-in" data-aos-delay="200">
+          <div class="big">The Gap<br><span style="font-size:0.65rem; font-weight:400; color:var(--text-muted);">No unified<br>multi‑material<br>+ 3D nano</span></div>
         </div>
       </div>
       <p class="text-muted" style="text-align:center; font-size:0.85rem;">
-        <span style="color:#f472b6;">P3</span> has nanoscale resolution but is single‑metal ·
-        <span style="color:#f59e0b;">P2</span> has multi‑material capability but is microscale ·
-        <strong style="color:#a78bfa;">No integration exists.</strong>
+        <span style="color:var(--rose);">P3</span> has nanoscale resolution but is single‑metal ·
+        <span style="color:var(--amber);">P2</span> has multi‑material capability but is microscale ·
+        <strong style="color:var(--purple);">No integration exists.</strong>
       </p>
     </div>
   </section>
@@ -1123,26 +1304,26 @@
   <section id="question">
     <div class="container">
       <div class="section-tag" style="background:rgba(196,181,253,0.12); color:#c4b5fd; border-color:rgba(196,181,253,0.15);">Section 04 · The next step</div>
-      <h2>One question. Built from the gaps.</h2>
-      <p class="text-muted" style="max-width:700px;">This is not a question from the papers — it is one we formed after reading all three.</p>
+      <h2 data-aos="fade-up">One question. Built from the gaps.</h2>
+      <p class="text-muted" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">This is not a question from the papers — it is one we formed after reading all three.</p>
 
-      <div class="question-box">
+      <div class="question-box" data-aos="fade-up" data-aos-delay="150">
         <p class="q">
-          "Can the <span style="color:#f59e0b;">pneumatic/ultrasonic dual‑atomization mid‑air blending</span> strategy of Hwang et al. (AM3D) be integrated with the <span style="color:#f472b6;">ion‑induced electrostatic focusing lens</span> of Jung et al. (IAAL) to enable the single‑pass fabrication of <span style="color:#2dd4bf;">compositionally graded, sub‑100 nm resolution 3D nano‑pillars and helices</span>?"
+          "Can the <span style="color:var(--amber);">pneumatic/ultrasonic dual‑atomization mid‑air blending</span> strategy of Hwang et al. (AM3D) be integrated with the <span style="color:var(--rose);">ion‑induced electrostatic focusing lens</span> of Jung et al. (IAAL) to enable the single‑pass fabrication of <span style="color:var(--teal);">compositionally graded, sub‑100 nm resolution 3D nano‑pillars and helices</span>?"
         </p>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem;">
-        <div style="background:rgba(255,255,255,0.03); padding:1.5rem; border-radius:12px;">
-          <h4 style="color:#2dd4bf;"><i class="fas fa-question-circle"></i> Why we ask it</h4>
+        <div style="background:rgba(255,255,255,0.03); padding:1.5rem; border-radius:12px;" data-aos="fade-right" data-aos-delay="100">
+          <h4 style="color:var(--teal);"><i class="fas fa-question-circle"></i> Why we ask it</h4>
           <ul style="color:#8892a8; list-style:none; padding-left:0; font-size:0.9rem;">
             <li style="padding:0.2rem 0;">✓ P3 proves <strong style="color:#fff;">sub‑100 nm 3D</strong> but only with single metals.</li>
             <li style="padding:0.2rem 0;">✓ P2 proves <strong style="color:#fff;">perfect multi‑material</strong> mixing but at micro‑scale.</li>
-            <li style="padding:0.2rem 0;">✓ Each solves part of the problem — <strong style="color:#a78bfa;">no one has joined all three.</strong></li>
+            <li style="padding:0.2rem 0;">✓ Each solves part of the problem — <strong style="color:var(--purple);">no one has joined all three.</strong></li>
           </ul>
         </div>
-        <div style="background:rgba(255,255,255,0.03); padding:1.5rem; border-radius:12px;">
-          <h4 style="color:#f59e0b;"><i class="fas fa-rocket"></i> Where this could go</h4>
+        <div style="background:rgba(255,255,255,0.03); padding:1.5rem; border-radius:12px;" data-aos="fade-left" data-aos-delay="150">
+          <h4 style="color:var(--amber);"><i class="fas fa-rocket"></i> Where this could go</h4>
           <ul style="color:#8892a8; list-style:none; padding-left:0; font-size:0.9rem;">
             <li style="padding:0.2rem 0;">✓ <strong style="color:#fff;">3D Nano‑electronics</strong> — multi‑material interconnects at the molecular scale.</li>
             <li style="padding:0.2rem 0;">✓ <strong style="color:#fff;">Heterogeneous sensors</strong> — dielectric + conductor in one 3D nano‑architecture.</li>
@@ -1159,48 +1340,48 @@
   <section id="verdict">
     <div class="container">
       <div class="section-tag">Section 05 · Final verdict</div>
-      <h2>Which paper wins — and why</h2>
-      <p class="text-muted" style="max-width:700px;">Each paper wins something different. The cards below show how each one scores.</p>
+      <h2 data-aos="fade-up">Which paper wins — and why</h2>
+      <p class="text-muted" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">Each paper wins something different. The cards below show how each one scores.</p>
 
       <div class="verdict-grid">
-        <div class="verdict-card" style="border-top:3px solid #2dd4bf;">
-          <div style="color:#2dd4bf; font-size:1.8rem;">📄</div>
-          <h4 style="color:#2dd4bf;">Best Foundation</h4>
+        <div class="verdict-card" style="border-top:3px solid var(--teal);" data-aos="fade-up" data-aos-delay="50">
+          <div style="color:var(--teal); font-size:1.8rem;">📄</div>
+          <h4 style="color:var(--teal);">Best Foundation</h4>
           <div class="label">P1 · Wilkinson &amp; Smith 2019</div>
           <div class="desc">The cleanest overview of AJP mechanics — the paper you'd give to someone new to the field.</div>
-          <div class="score" style="color:#2dd4bf;">4/5</div>
+          <div class="score" style="color:var(--teal);">4/5</div>
           <div class="bars"><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar"></div></div>
         </div>
-        <div class="verdict-card b2" style="border-top:3px solid #f59e0b;">
-          <div style="color:#f59e0b; font-size:1.8rem;">🧪</div>
-          <h4 style="color:#f59e0b;">Best Materials Innovation</h4>
+        <div class="verdict-card b2" style="border-top:3px solid var(--amber);" data-aos="fade-up" data-aos-delay="100">
+          <div style="color:var(--amber); font-size:1.8rem;">🧪</div>
+          <h4 style="color:var(--amber);">Best Materials Innovation</h4>
           <div class="label">P2 · Hwang &amp; Choi 2024</div>
           <div class="desc">Solves a 60‑year problem with elegant simplicity. The most rewarding paper to dig into.</div>
-          <div class="score" style="color:#f59e0b;">4.5/5</div>
-          <div class="bars"><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill" style="background:#f59e0b;"></div></div>
+          <div class="score" style="color:var(--amber);">4.5/5</div>
+          <div class="bars"><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill" style="background:var(--amber);"></div></div>
         </div>
-        <div class="verdict-card b3" style="border-top:3px solid #f472b6;">
-          <div style="color:#f472b6; font-size:1.8rem;">⚡</div>
-          <h4 style="color:#f472b6;">Best Concept · Most Exciting</h4>
+        <div class="verdict-card b3" style="border-top:3px solid var(--rose);" data-aos="fade-up" data-aos-delay="150">
+          <div style="color:var(--rose); font-size:1.8rem;">⚡</div>
+          <h4 style="color:var(--rose);">Best Concept · Most Exciting</h4>
           <div class="label">P3 · Jung &amp; Choi 2019</div>
           <div class="desc">The most exciting concept — electrostatically guided 3D nano‑printing could define the next generation of additive manufacturing.</div>
-          <div class="score" style="color:#f472b6;">5/5</div>
-          <div class="bars"><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill" style="background:#f472b6;"></div></div>
+          <div class="score" style="color:var(--rose);">5/5</div>
+          <div class="bars"><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill"></div><div class="bar fill" style="background:var(--rose);"></div></div>
         </div>
       </div>
 
-      <div style="background:rgba(255,255,255,0.03); padding:1.5rem 2rem; border-radius:12px; margin-top:1.5rem; border-left:3px solid #f59e0b;">
+      <div style="background:rgba(255,255,255,0.03); padding:1.5rem 2rem; border-radius:12px; margin-top:1.5rem; border-left:3px solid var(--amber);" data-aos="fade-up" data-aos-delay="200">
         <p style="color:#fff; font-size:1rem; font-weight:500;">
-          <strong style="color:#f59e0b;">Our honest opinion:</strong>
+          <strong style="color:var(--amber);">Our honest opinion:</strong>
         </p>
         <p style="color:#8892a8; font-size:0.95rem;">
-          If we had to pick the <strong style="color:#fff;">most impactful</strong> paper, it is <span style="color:#f59e0b; font-weight:600;">P2 — Hwang &amp; Choi 2024</span>.
+          If we had to pick the <strong style="color:#fff;">most impactful</strong> paper, it is <span style="color:var(--amber); font-weight:600;">P2 — Hwang &amp; Choi 2024</span>.
           P1 and P3 prove beautiful ideas, but P2 solves a foundational materials problem that has limited the entire field for decades.
-          That said, <span style="color:#f472b6; font-weight:600;">P3</span> is the most exciting concept — electrostatically guided 3D nano‑printing could define the next generation of additive manufacturing.
-          And <span style="color:#2dd4bf; font-weight:600;">P1</span> is the foundation the others build on.
+          That said, <span style="color:var(--rose); font-weight:600;">P3</span> is the most exciting concept — electrostatically guided 3D nano‑printing could define the next generation of additive manufacturing.
+          And <span style="color:var(--teal); font-weight:600;">P1</span> is the foundation the others build on.
         </p>
         <p style="color:#8892a8; font-size:0.85rem; margin-top:0.5rem;">
-          Together they tell one story: <span style="color:#2dd4bf;">P1 brings the mechanics</span>, <span style="color:#f472b6;">P3 brings the nano‑resolution</span>, and <span style="color:#f59e0b;">P2 shows how materials can be blended perfectly</span>.
+          Together they tell one story: <span style="color:var(--teal);">P1 brings the mechanics</span>, <span style="color:var(--rose);">P3 brings the nano‑resolution</span>, and <span style="color:var(--amber);">P2 shows how materials can be blended perfectly</span>.
         </p>
       </div>
     </div>
@@ -1211,13 +1392,23 @@
   <!-- ================================================================ -->
   <footer>
     <p>Aerosol Nanotechnology · Three Papers · 3‑Level Analysis</p>
-    <p style="font-size:0.65rem; color:#5a6478;">Based on Wilkinson et al. (2019) · Hwang et al. (2024) · Jung et al. (2019)</p>
+    <p style="font-size:0.65rem; color:var(--text-dim);">Based on Wilkinson et al. (2019) · Hwang et al. (2024) · Jung et al. (2019)</p>
   </footer>
 
   <!-- ================================================================ -->
   <!-- SCRIPTS -->
   <!-- ================================================================ -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+  </script>
   <script>
+    // ===== AOS =====
+    AOS.init({
+      duration: 700,
+      once: true,
+      offset: 80,
+      easing: 'ease-out'
+    });
+
     // ===== PROGRESS BAR =====
     window.addEventListener('scroll', function() {
       const scrollTop = window.scrollY;
@@ -1261,7 +1452,7 @@
       const canvas = document.getElementById('particle-canvas');
       const ctx = canvas.getContext('2d');
       let width, height, particles = [];
-      const num = 60;
+      const num = 70;
 
       function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1274,10 +1465,10 @@
         constructor() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * 0.2;
-          this.vy = (Math.random() - 0.5) * 0.2;
-          this.r = Math.random() * 2 + 0.5;
-          this.o = Math.random() * 0.2 + 0.05;
+          this.vx = (Math.random() - 0.5) * 0.25;
+          this.vy = (Math.random() - 0.5) * 0.25;
+          this.r = Math.random() * 2.5 + 0.5;
+          this.o = Math.random() * 0.25 + 0.05;
         }
         update() {
           this.x += this.vx;

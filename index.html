@@ -1,494 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aerosol Jet Printing – Three Papers, One Mission</title>
-  <style>
-    /* --- RESET & BASE --- */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      background: #0b0d1a;
-      color: #eef2f7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
 
-    .presentation-container {
-      max-width: 1100px;
-      width: 100%;
-      background: rgba(18, 22, 40, 0.85);
-      backdrop-filter: blur(6px);
-      border-radius: 40px;
-      padding: 30px 35px 45px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
+**Advantages Summary:**
 
-    /* --- SLIDES --- */
-    .slide {
-      display: none;
-      animation: fadeUp 0.6s ease;
-    }
-    .slide.active {
-      display: block;
-    }
+| Feature | Benefit for QC | Benefit for Failure Analysis |
+|---------|----------------|------------------------------|
+| Complete profile | Verify formulation | Understand failure mode |
+| No preparation | Fast, reproducible | No artifact introduction |
+| Small sample | Test finished goods | Analyze failed parts |
+| Automated | High throughput | Consistent results |
+| Library search | Identify unknowns | Match known failures |
 
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+**ISO Methods for QC:**
 
-    .slide-number {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.3);
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      font-weight: 400;
-    }
+| Method | Application |
+|--------|-------------|
+| ISO 7270 part 1 | Identification of 15 polymer types |
+| ISO 7270 part 2 | Styrene/butadiene/isoprene ratio |
+| ISO 16038 | Identification of 32 antidegradants |
 
-    .slide-content {
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+---
 
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
+## Q21: Give a definition for the term additive in context to polymers
 
-    h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #c7d2fe;
-      margin-bottom: 12px;
-    }
+**Answer:**
 
-    h3 {
-      font-size: 1.4rem;
-      font-weight: 500;
-      color: #a5b4fc;
-      margin: 20px 0 12px;
-    }
+**EC Definition:** "An additive is a substance which is incorporated into plastics to achieve a technical effect in the finished product, and is intended to be an essential part of the finished article."
 
-    p, li {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin-bottom: 10px;
-    }
+**Key Points:**
 
-    ul {
-      padding-left: 28px;
-      margin: 10px 0;
-    }
-    li { margin-bottom: 6px; }
+1. **Intentional Addition:** Additives are deliberately incorporated, not impurities or residual monomers.
+2. **Technical Effect:** Each additive has a specific function; without additives, "polymer industry is impossible."
+3. **Essential Part:** Becomes integral to final product, affects performance and durability.
+4. **Distinction from Unintentional Components:**
 
-    .highlight-box {
-      background: rgba(167, 139, 250, 0.12);
-      border-left: 5px solid #a78bfa;
-      padding: 18px 25px;
-      border-radius: 14px;
-      margin: 20px 0;
-    }
+| Intentional Additives | Unintentional Components |
+|----------------------|-------------------------|
+| Antioxidants | Water |
+| Plasticizers | Residual monomers |
+| UV stabilizers | Catalyst residues |
+| Fillers | Contaminants |
+| Flame retardants | Process aids |
 
-    .highlight-box strong {
-      color: #c4b5fd;
-    }
+**Examples from Lecture:** Antioxidants, antistatic agents, antifogging agents, emulsifiers, fillers, impact modifiers, lubricants, plasticisers, release agents, solvents, stabilisers, thickeners, UV absorbers.
 
-    .research-question {
-      background: linear-gradient(145deg, #1e1b4b, #0f172a);
-      padding: 25px 30px;
-      border-radius: 20px;
-      border: 1px solid #4f46e5;
-      box-shadow: 0 0 30px rgba(79, 70, 229, 0.15);
-      margin: 20px 0;
-    }
+**Importance:** "The successful use of plastic materials in many applications... is substantially attributable to the incorporation of additives."
 
-    .research-question p {
-      font-size: 1.4rem;
-      font-weight: 500;
-      color: #e0e7ff;
-      margin: 0;
-    }
+**Economic Impact:** Over 13,000 additive products; >1,500 antioxidants; ~1,000 flame retardants; >1,200 antimicrobials.
 
-    .research-question .simple {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #fcd34d, #f59e0b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-top: 10px;
-    }
+**Classification:**
+- **Primary additives:** Form integral part of basic characteristics
+- **Secondary additives:** Improve performance and/or durability
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin: 20px 0;
-    }
-    .col {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 20px;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .col h4 {
-      font-size: 1.3rem;
-      color: #a5b4fc;
-      margin-bottom: 10px;
-    }
+---
 
-    .rating {
-      display: inline-block;
-      background: #1e293b;
-      padding: 4px 14px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      color: #fbbf24;
-      font-weight: 600;
-    }
+## Q22: Which function can be influenced by additives in plastics? Mention at least 10 examples
 
-    .presenters {
-      display: flex;
-      gap: 40px;
-      justify-content: center;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-    .presenter {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 15px 30px;
-      border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .presenter .icon {
-      font-size: 2.8rem;
-      display: block;
-    }
-    .presenter .name {
-      font-weight: 600;
-      color: #c7d2fe;
-      margin-top: 6px;
-    }
+**Answer:**
 
-    /* --- NAVIGATION --- */
-    .nav-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 40px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+Additives influence a wide range of functions in plastics:
 
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #e2e8f0;
-      padding: 12px 30px;
-      border-radius: 40px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      backdrop-filter: blur(4px);
-    }
-    .nav-btn:hover {
-      background: rgba(167, 139, 250, 0.2);
-      border-color: #a78bfa;
-      transform: scale(1.02);
-    }
-    .nav-btn:disabled {
-      opacity: 0.2;
-      cursor: not-allowed;
-      transform: none;
-    }
+**1. Polymerization/Chemical Modification Aids:** Accelerators, cross-linking agents, chain growth regulators, promoters, compatibilisers
 
-    .dots {
-      display: flex;
-      gap: 12px;
-    }
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.15);
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .dot.active {
-      background: #a78bfa;
-      width: 32px;
-    }
+**2. Improvement in Processability and Productivity:** Defoaming agents, blowing agents, release agents, flow promoters, surfactants, plasticisers, thixotropic agents, processing aids, wetting agents, slip agents, lubricants
 
-    /* --- RESPONSIVE --- */
-    @media (max-width: 700px) {
-      .presentation-container { padding: 20px; }
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.5rem; }
-      p, li { font-size: 1rem; }
-      .two-col { grid-template-columns: 1fr; }
-      .research-question p { font-size: 1.1rem; }
-      .research-question .simple { font-size: 1.3rem; }
-      .presenters { flex-direction: column; align-items: center; }
-      .nav-controls { flex-direction: column; align-items: stretch; }
-    }
-  </style>
-</head>
-<body>
+**3. Increased Resistance to Degradation:** Acid scavengers, metal deactivators, biostabilisers, processing/thermal stabilisers, light/UV stabilisers
 
-<div class="presentation-container">
+**4. Improvement/Modification of Mechanical Properties:** Compatibilisers, cross-linking agents, fibrous reinforcements, fillers, particle reinforcements, impact modifiers, nucleating agents, plasticisers/flexibilisers
 
-  <!-- SLIDES -->
-  <div class="slide active" data-slide="0">
-    <div class="slide-number">01 / 11</div>
-    <div class="slide-content">
-      <div class="presenters">
-        <div class="presenter"><span class="icon">👩‍🔬</span><span class="name">Female Presenter</span></div>
-        <div class="presenter"><span class="icon">👨‍🔬</span><span class="name">Male Presenter</span></div>
-      </div>
-      <h1>Aerosol Jet Printing</h1>
-      <h2>Three Papers, One Mission</h2>
-      <p style="font-size:1.3rem; color:#a5b4fc;">Seminar Presentation · 2025</p>
-    </div>
-  </div>
+**5. Specific Examples from Technology Questions:**
 
-  <div class="slide" data-slide="1">
-    <div class="slide-number">02 / 11</div>
-    <div class="slide-content">
-      <h2>What is Aerosol Jet Printing?</h2>
-      <ul>
-        <li><strong>Contactless printing</strong> – head hovers 1–5 mm above surface</li>
-        <li>Sprays <strong>functional materials</strong> (silver, ceramics, polymers)</li>
-        <li>Prints lines as thin as <strong>10 µm</strong> – thinner than a hair!</li>
-        <li>Can print on <strong>curved or uneven</strong> surfaces</li>
-        <li>Two mist creation methods: <strong>ultrasonic</strong> (uniform) &amp; <strong>pneumatic</strong> (faster)</li>
-      </ul>
-    </div>
-  </div>
+| Desired Function | Additive Role |
+|-----------------|---------------|
+| Short cycle times | Processing aids |
+| Better mould release | Release agents |
+| Reduced plate-out | Compatible lubricants |
+| Dimensional stability | Nucleating agents |
+| Processing protection | Thermal stabilisers |
+| Better melt flow | Flow promoters |
+| Improved surface | Processing aids |
+| Higher molecular weight | Chain extenders |
+| Impact strength | Impact modifiers |
 
-  <div class="slide" data-slide="2">
-    <div class="slide-number">03 / 11</div>
-    <div class="slide-content">
-      <h2>📄 Paper 1 – Wilkinson &amp; Smith (2019)</h2>
-      <h3 style="color:#fcd34d;">Review Paper – The Foundation</h3>
-      <ul>
-        <li>Summarises everything known about AJP up to 2018</li>
-        <li>Explains <strong>physics</strong> – droplet formation, focusing, materials</li>
-        <li>Works with <strong>many materials</strong> – silver, ceramics, even proteins</li>
-        <li><span style="color:#f87171;">Limitations:</span> resolution limited to ~10 µm, <strong>overspray</strong> problem</li>
-      </ul>
-      <div style="margin-top:15px;"><span class="rating">⭐ 4 / 5 – Best foundation</span></div>
-    </div>
-  </div>
+**10+ Functions with Examples:**
 
-  <div class="slide" data-slide="3">
-    <div class="slide-number">04 / 11</div>
-    <div class="slide-content">
-      <h2>📄 Paper 2 – Hwang &amp; Choi (2024)</h2>
-      <h3 style="color:#6ee7b7;">Mid‑Air Blending – The Mixing Solution</h3>
-      <ul>
-        <li><strong>Problem:</strong> nanoparticles clump when mixed before printing</li>
-        <li><strong>Solution:</strong> two separate atomizers – combine <em>only at the printhead</em></li>
-        <li>Result: <strong>perfect dispersion</strong>, no clumps</li>
-        <li>Performance: dielectric constant <strong>14 → 28</strong> (double!)</li>
-        <li>16× better electrical properties for multi‑layer structures</li>
-      </ul>
-      <div style="margin-top:15px;"><span class="rating">⭐ 4.5 / 5 – Solves blending</span></div>
-    </div>
-  </div>
+| # | Function | Example Additive |
+|---|----------|------------------|
+| 1 | Increase flexibility | Plasticisers (phthalates in PVC) |
+| 2 | Prevent heat degradation | Thermal stabilisers (metal soaps) |
+| 3 | Protect from UV | UV stabilisers (HALS, benzophenones) |
+| 4 | Reduce friction | Slip agents (erucamide) |
+| 5 | Improve impact strength | Impact modifiers (rubber particles) |
+| 6 | Add color | Pigments (TiO₂, carbon black) |
+| 7 | Reduce flammability | Flame retardants (brominated compounds) |
+| 8 | Improve stiffness | Fillers (talc, calcium carbonate) |
+| 9 | Prevent static | Antistatic agents (ethoxylated amines) |
+| 10 | Control crystallization | Nucleating agents (sorbitol derivatives) |
+| 11 | Aid processing | Lubricants (stearates) |
+| 12 | Prevent oxidation | Antioxidants (hindered phenols) |
 
-  <div class="slide" data-slide="4">
-    <div class="slide-number">05 / 11</div>
-    <div class="slide-content">
-      <h2>📄 Paper 3 – Jung &amp; Choi (2019)</h2>
-      <h3 style="color:#f472b6;">Electric‑Field 3D Printing – The Resolution Champion</h3>
-      <ul>
-        <li>Uses <strong>electric fields</strong> to guide charged nanoparticles</li>
-        <li>Prints <strong>true 3D structures</strong> – pillars, spirals, the letters “3D”</li>
-        <li>Resolution <strong>&lt; 100 nm</strong> – 100× smaller than conventional AJP</li>
-        <li>Can switch between different metals during printing</li>
-        <li><span style="color:#f87171;">Catch:</span> only works with <strong>single metals</strong> – no blending</li>
-      </ul>
-      <div style="margin-top:15px;"><span class="rating">⭐ 5 / 5 – Visionary concept</span></div>
-    </div>
-  </div>
+---
 
-  <div class="slide" data-slide="5">
-    <div class="slide-number">06 / 11</div>
-    <div class="slide-content">
-      <h2>Comparing the Three Papers</h2>
-      <div class="two-col">
-        <div class="col">
-          <h4>📘 Paper 1</h4>
-          <p><strong>Foundation</strong> – explains the basics, but doesn’t solve major issues.</p>
-        </div>
-        <div class="col">
-          <h4>📗 Paper 2</h4>
-          <p><strong>Blending</strong> – perfect material mixing, but stays at the micro‑scale.</p>
-        </div>
-        <div class="col">
-          <h4>📕 Paper 3</h4>
-          <p><strong>Nano 3D</strong> – incredible resolution, but only one material at a time.</p>
-        </div>
-      </div>
-      <p style="text-align:center; margin-top:10px;">Each paper is excellent – but <strong>none connects all the dots</strong>.</p>
-    </div>
-  </div>
+## Q23: Which difficulties have to be faced if you want to perform an additive analytic in plastic?
 
-  <div class="slide" data-slide="6">
-    <div class="slide-number">07 / 11</div>
-    <div class="slide-content">
-      <h2>The Missing Link</h2>
-      <div class="two-col">
-        <div class="col" style="border-color:#6ee7b7;">
-          <h4>✅ Paper 2</h4>
-          <p>Perfect material blending</p>
-          <p style="color:#f87171;">❌ But micro‑scale only</p>
-        </div>
-        <div class="col" style="border-color:#f472b6;">
-          <h4>✅ Paper 3</h4>
-          <p>Nano‑scale 3D printing</p>
-          <p style="color:#f87171;">❌ But only one material</p>
-        </div>
-      </div>
-      <div class="highlight-box">
-        <strong>❓ No one has combined both approaches yet.</strong><br>
-        That’s the <strong>gap</strong> we want to fill.
-      </div>
-    </div>
-  </div>
+**Answer:**
 
-  <div class="slide" data-slide="7">
-    <div class="slide-number">08 / 11</div>
-    <div class="slide-content">
-      <h2>Our Research Question</h2>
-      <div class="research-question">
-        <p style="font-size:1.1rem; color:#a5b4fc;">Can we combine the best of both worlds?</p>
-        <p class="simple">“Can we combine perfect material blending with ultra‑precise 3D nano‑printing to build complex multi‑material 3D structures in a single pass?”</p>
-      </div>
-      <ul>
-        <li><strong>Why it matters:</strong> enables <strong>3D nano‑electronics</strong>, <strong>heterogeneous sensors</strong>, and <strong>metamaterials</strong></li>
-        <li>Blend Paper 2’s <em>mid‑air mixing</em> with Paper 3’s <em>electric‑field guidance</em></li>
-      </ul>
-    </div>
-  </div>
+Additive analysis in plastics presents numerous challenges due to the complex nature of both the matrix and the additives themselves.
 
-  <div class="slide" data-slide="8">
-    <div class="slide-number">09 / 11</div>
-    <div class="slide-content">
-      <h2>Potential Applications</h2>
-      <div class="two-col">
-        <div class="col"><h4>⚡ 3D Nano‑Electronics</h4><p>Ultra‑tiny circuits with multiple materials</p></div>
-        <div class="col"><h4>🧪 Heterogeneous Sensors</h4><p>Combine materials for better sensitivity</p></div>
-        <div class="col"><h4>🌀 Metamaterials</h4><p>Artificial materials with properties not found in nature</p></div>
-        <div class="col"><h4>🩺 Medical Implants</h4><p>Customised, multi‑material bio‑devices</p></div>
-      </div>
-    </div>
-  </div>
+**1. Complex Matrix Interference:** Polymer itself is complex (varying MW, branching, tacticity); "additives can impede the assignment of a plastic"
 
-  <div class="slide" data-slide="9">
-    <div class="slide-number">10 / 11</div>
-    <div class="slide-content">
-      <h2>Final Verdict</h2>
-      <div class="two-col">
-        <div class="col"><h4>📘 Paper 1</h4><p><strong>Best foundation</strong> – the one to start with</p></div>
-        <div class="col"><h4>📗 Paper 2</h4><p><strong>Most impactful</strong> – solves a foundational blending problem</p></div>
-        <div class="col"><h4>📕 Paper 3</h4><p><strong>Most exciting</strong> – defines the next generation of printing</p></div>
-      </div>
-      <div class="highlight-box">
-        <p style="font-size:1.2rem;">Together they tell one story: <strong>mechanics → blending → nano‑resolution</strong></p>
-        <p>Our mission: <strong>bring all three together.</strong></p>
-      </div>
-    </div>
-  </div>
+**2. Unknown Parameters:** "The analysis of an unknown number of unknown additives in unknown concentration in an unknown polymeric matrix is a demanding task"
 
-  <div class="slide" data-slide="10">
-    <div class="slide-number">11 / 11</div>
-    <div class="slide-content" style="align-items:center; text-align:center;">
-      <h1 style="font-size:2.8rem;">Thank You!</h1>
-      <p style="font-size:1.6rem; color:#a5b4fc;">Questions? Let’s explore the future of printing.</p>
-      <div class="presenters" style="margin-top:30px;">
-        <div class="presenter"><span class="icon">👩‍🔬</span><span class="name">Female Presenter</span></div>
-        <div class="presenter"><span class="icon">👨‍🔬</span><span class="name">Male Presenter</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- NAVIGATION -->
-  <div class="nav-controls">
-    <button class="nav-btn" id="prevBtn" disabled>← Previous</button>
-    <div class="dots" id="dotsContainer"></div>
-    <button class="nav-btn" id="nextBtn">Next →</button>
-  </div>
-
-</div>
-
-<script>
-  (function() {
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-    let current = 0;
-
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const dotsContainer = document.getElementById('dotsContainer');
-
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-      const dot = document.createElement('span');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.dataset.index = i;
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    }
-
-    function updateUI() {
-      slides.forEach((slide, idx) => {
-        slide.classList.toggle('active', idx === current);
-      });
-      document.querySelectorAll('.dot').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === current);
-      });
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === totalSlides - 1;
-    }
-
-    function goTo(index) {
-      if (index < 0 || index >= totalSlides) return;
-      current = index;
-      updateUI();
-    }
-
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') goTo(current - 1);
-      if (e.key === 'ArrowRight') goTo(current + 1);
-    });
-
-    // Initialise
-    updateUI();
-  })();
-</script>
-
-</body>
-</html>
+**3. Wide Range of Chemical Materials:**
+- Molecular weight: low MW to polymeric additives
+- Volatility: highly volatile to non-volatile
+- Polarity: non-polar to highly polar
+- Organic/inorganic: both
